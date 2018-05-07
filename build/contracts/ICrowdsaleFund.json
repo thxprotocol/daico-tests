@@ -1,0 +1,360 @@
+{
+  "contractName": "ICrowdsaleFund",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "contributor",
+          "type": "address"
+        }
+      ],
+      "name": "processContribution",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "onCrowdsaleEnd",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "enableCrowdsaleRefund",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.21;\n\n/**\n * @title ICrowdsaleFund\n * @dev Fund methods used by crowdsale contract\n */\ninterface ICrowdsaleFund {\n    /**\n    * @dev Function accepts user`s contributed ether and logs contribution\n    * @param contributor Contributor wallet address.\n    */\n    function processContribution(address contributor) external payable;\n    /**\n    * @dev Function is called on the end of successful crowdsale\n    */\n    function onCrowdsaleEnd() external;\n    /**\n    * @dev Function is called if crowdsale failed to reach soft cap\n    */\n    function enableCrowdsaleRefund() external;\n}\n",
+  "sourcePath": "/Users/peterpolman/Sites/daico/contracts/fund/ICrowdsaleFund.sol",
+  "ast": {
+    "absolutePath": "/Users/peterpolman/Sites/daico/contracts/fund/ICrowdsaleFund.sol",
+    "exportedSymbols": {
+      "ICrowdsaleFund": [
+        4482
+      ]
+    },
+    "id": 4483,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4470,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".21"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:11"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title ICrowdsaleFund\n@dev Fund methods used by crowdsale contract",
+        "fullyImplemented": false,
+        "id": 4482,
+        "linearizedBaseContracts": [
+          4482
+        ],
+        "name": "ICrowdsaleFund",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Function accepts user`s contributed ether and logs contribution\n@param contributor Contributor wallet address.",
+            "id": 4475,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "processContribution",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4473,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4472,
+                  "name": "contributor",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4475,
+                  "src": "310:19:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4471,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "310:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "309:21:11"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 4474,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "347:0:11"
+            },
+            "scope": 4482,
+            "src": "281:67:11",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function is called on the end of successful crowdsale",
+            "id": 4478,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "onCrowdsaleEnd",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4476,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "456:2:11"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4477,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "467:0:11"
+            },
+            "scope": 4482,
+            "src": "433:35:11",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function is called if crowdsale failed to reach soft cap",
+            "id": 4481,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "enableCrowdsaleRefund",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4479,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "586:2:11"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4480,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "597:0:11"
+            },
+            "scope": 4482,
+            "src": "556:42:11",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4483,
+        "src": "107:493:11"
+      }
+    ],
+    "src": "0:601:11"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/peterpolman/Sites/daico/contracts/fund/ICrowdsaleFund.sol",
+    "exportedSymbols": {
+      "ICrowdsaleFund": [
+        4482
+      ]
+    },
+    "id": 4483,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4470,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".21"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:11"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title ICrowdsaleFund\n@dev Fund methods used by crowdsale contract",
+        "fullyImplemented": false,
+        "id": 4482,
+        "linearizedBaseContracts": [
+          4482
+        ],
+        "name": "ICrowdsaleFund",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Function accepts user`s contributed ether and logs contribution\n@param contributor Contributor wallet address.",
+            "id": 4475,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "processContribution",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4473,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4472,
+                  "name": "contributor",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4475,
+                  "src": "310:19:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4471,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "310:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "309:21:11"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 4474,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "347:0:11"
+            },
+            "scope": 4482,
+            "src": "281:67:11",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function is called on the end of successful crowdsale",
+            "id": 4478,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "onCrowdsaleEnd",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4476,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "456:2:11"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4477,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "467:0:11"
+            },
+            "scope": 4482,
+            "src": "433:35:11",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function is called if crowdsale failed to reach soft cap",
+            "id": 4481,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "enableCrowdsaleRefund",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4479,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "586:2:11"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4480,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "597:0:11"
+            },
+            "scope": 4482,
+            "src": "556:42:11",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4483,
+        "src": "107:493:11"
+      }
+    ],
+    "src": "0:601:11"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.23+commit.124ca40d.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-28T15:10:38.448Z"
+}

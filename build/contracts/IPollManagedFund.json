@@ -1,0 +1,408 @@
+{
+  "contractName": "IPollManagedFund",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "agree",
+          "type": "bool"
+        },
+        {
+          "name": "_tap",
+          "type": "uint256"
+        }
+      ],
+      "name": "onTapPollFinish",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "agree",
+          "type": "bool"
+        }
+      ],
+      "name": "onRefundPollFinish",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.21;\n\n/**\n * @title IPollManagedFund\n * @dev Fund callbacks used by polling contracts\n */\ninterface IPollManagedFund {\n    /**\n     * @dev TapPoll callback\n     * @param agree True if new tap value is accepted by majority of contributors\n     * @param _tap New tap value\n     */\n    function onTapPollFinish(bool agree, uint256 _tap) external;\n\n    /**\n     * @dev RefundPoll callback\n     * @param agree True if contributors decided to allow refunding\n     */\n    function onRefundPollFinish(bool agree) external;\n}",
+  "sourcePath": "/Users/peterpolman/Sites/daico/contracts/fund/IPollManagedFund.sol",
+  "ast": {
+    "absolutePath": "/Users/peterpolman/Sites/daico/contracts/fund/IPollManagedFund.sol",
+    "exportedSymbols": {
+      "IPollManagedFund": [
+        4531
+      ]
+    },
+    "id": 4532,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4518,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".21"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:13"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title IPollManagedFund\n@dev Fund callbacks used by polling contracts",
+        "fullyImplemented": false,
+        "id": 4531,
+        "linearizedBaseContracts": [
+          4531
+        ],
+        "name": "IPollManagedFund",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev TapPoll callback\n@param agree True if new tap value is accepted by majority of contributors\n@param _tap New tap value",
+            "id": 4525,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "onTapPollFinish",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4523,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4520,
+                  "name": "agree",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4525,
+                  "src": "328:10:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4519,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "328:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4522,
+                  "name": "_tap",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4525,
+                  "src": "340:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4521,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "340:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "327:26:13"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4524,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "362:0:13"
+            },
+            "scope": 4531,
+            "src": "303:60:13",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev RefundPoll callback\n@param agree True if contributors decided to allow refunding",
+            "id": 4530,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "onRefundPollFinish",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4528,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4527,
+                  "name": "agree",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4530,
+                  "src": "513:10:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4526,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "513:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "512:12:13"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4529,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "533:0:13"
+            },
+            "scope": 4531,
+            "src": "485:49:13",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4532,
+        "src": "110:426:13"
+      }
+    ],
+    "src": "0:536:13"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/peterpolman/Sites/daico/contracts/fund/IPollManagedFund.sol",
+    "exportedSymbols": {
+      "IPollManagedFund": [
+        4531
+      ]
+    },
+    "id": 4532,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4518,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".21"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:13"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": "@title IPollManagedFund\n@dev Fund callbacks used by polling contracts",
+        "fullyImplemented": false,
+        "id": 4531,
+        "linearizedBaseContracts": [
+          4531
+        ],
+        "name": "IPollManagedFund",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev TapPoll callback\n@param agree True if new tap value is accepted by majority of contributors\n@param _tap New tap value",
+            "id": 4525,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "onTapPollFinish",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4523,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4520,
+                  "name": "agree",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4525,
+                  "src": "328:10:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4519,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "328:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4522,
+                  "name": "_tap",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4525,
+                  "src": "340:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4521,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "340:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "327:26:13"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4524,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "362:0:13"
+            },
+            "scope": 4531,
+            "src": "303:60:13",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev RefundPoll callback\n@param agree True if contributors decided to allow refunding",
+            "id": 4530,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "onRefundPollFinish",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4528,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4527,
+                  "name": "agree",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4530,
+                  "src": "513:10:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4526,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "513:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "512:12:13"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 4529,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "533:0:13"
+            },
+            "scope": 4531,
+            "src": "485:49:13",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4532,
+        "src": "110:426:13"
+      }
+    ],
+    "src": "0:536:13"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.23+commit.124ca40d.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-28T15:10:38.449Z"
+}
