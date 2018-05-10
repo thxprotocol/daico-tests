@@ -1,2 +1,4 @@
 .idea
 datadir
+build
+solc_build
