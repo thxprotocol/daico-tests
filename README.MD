@@ -5,6 +5,18 @@ DAICO Smart Contracts needed for the OST Crowdsale.
 
 Clone the repository with `git clone git@github.com:peterpolman/daico-smart-contracts.git daico`
 
+## Index
+* [Configure dev environment](#configure-dev-environment)
+* [Configure test environment](#configure-test-environment)
+* [Configure and launch Ganache blockchain](#configure-and-launch-ganache-blockchain)
+* [Configure and launch Geth blockchain](#configure-and-launch-geth-blockchain)
+* [Using the JavaScript console](#using-the-javascript-console)
+* [Using the MIST Wallet](#using-the-mist-wallet)
+* [Using Remix](#using-remix)
+* [Compiling contracts](#compilation-of-contracts)
+* [Deploying contracts](#deployment-of-contracts)
+* [Configuration of the DAICO](#configuration-of-the-daico)
+
 ## Configure dev environment
 
 [Install Ganache](https://github.com/trufflesuite/ganache)
@@ -99,7 +111,7 @@ Use Remix for quick debugging of smart contracts. Set up this listener for acces
 remixd -s /Users/peterpolman/Sites/daico/contracts`
 ```
 
-## Compilation of contracts
+## Compiling the contracts
 The easiest way is to use truffle for compiling the ABI and BIN code necessary for a deploy on a network of choice. This will create a build foldelr containing JSON files holding the ABI and binary specifications for your contracts.
 ```
 truffle compile --network ganache
@@ -156,7 +168,7 @@ Now execute the deployment script on a network of choice (e.g. geth)!
 
 `truffle exec deploy_token_example.js --network geth`  
 
-## Deployment of contracts
+## Deploying contracts
 Remove contract json builds (skip this if you have the latest build) and and deploy on the chosen network.
 
 ```
@@ -175,7 +187,7 @@ truffle exec ./scripts/deploy_crowdsale.js --network geth;
 ```
 
 
-## After deployment:
+## Configuration of the DAICO
 ```
 # First: Set the tokenprice through the crowdsale contract
 # @param _tokenPriceNum
@@ -216,14 +228,15 @@ web3.eth.sendTransaction({from: web3.eth.accounts[9], to: "0xb31ba2d2fc075b5d23b
 ```
 
 ```
+# Send ether from one account to the other
 web3.eth.sendTransaction({from: web3.eth.accounts[0], to: web3.eth.accounts[1], value: web3.toWei(10, "ether")});
 ```
 
-*Are processReservationContribution() and processReservationFundContribution() duplicates?*
-
-# GOT STUCK HERE!
+**WARNING: Are processReservationContribution() and processReservationFundContribution() duplicates?**
 
 ```
+# GOT STUCK HERE!
+
 ReservationFund.sol:
 
 69:         contributions[contributor] = safeAdd(contributions[contributor], msg.value);
