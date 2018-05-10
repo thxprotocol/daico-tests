@@ -1,43 +1,70 @@
 
-## Install dev blockchain (Geth)
+# DAICO Smart Contracts 
+This repository holds the deployment scripts and experimental code for the 
+DAICO Smart Contracts needed for the OST Crowdsale.
 
-### Remove old Geth data
-`rm -rf ./datadir;`
+## Installation RPC (go-ethereum/geth)
 
-### Init the Geth blockchain with the genesis block
-`geth --datadir=./datadir/ init ./genesis.json`
+```
+# Remove old Geth data
+rm -rf ./datadir;
+# Init the Geth blockchain with the genesis block
+geth --datadir=./datadir/ init ./genesis.json
+# Start the blockchain with usefull API's
+geth --datadir=./datadir/ --rpc --rpcport 7545 --rpccorsdomain "*" --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3,debug"
+# Start the Geth Console
+geth attach ipc://Users/peterpolman/Sites/daico/datadir/geth.ipc
+# === Configure accounts first! ===
+# Stop Geth and restart with --mine parameter
+geth --datadir=./datadir/ --rpc --rpcport 7545 --rpccorsdomain "*" --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3,debug" --mine
+```
 
-### Start the blockchain with usefull API's
-`geth --datadir=./datadir/ --rpc --rpcport 7545 --rpccorsdomain "*" --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3,debug"`
+## Using the JavaScript console
+```
+# Generate 10 accounts and unlock all available accounts
+for (var i = 0; i < 10; i++) personal.newAccount("");
+for (var i = 0; i < personal.listAccounts.length; i++) personal.unlockAccount(personal.listAccounts[i], "", 15000)
+```
 
-### Start the Geth Console
-`geth attach ipc://Users/peterpolman/Sites/daico/datadir/geth.ipc`
+## Using the MIST Wallet
 
-### Generate 10 accounts and unlock all available accounts
-`for (var i = 0; i < 10; i++) personal.newAccount("");`
-`for (var i = 0; i < personal.listAccounts.length; i++) personal.unlockAccount(personal.listAccounts[i], "", 15000)`
+Open MIST connected to the Geth RPC
+```
+open -a /Applications/Mist.app --args --rpc /Users/peterpolman/Sites/daico/datadir/geth.ipc
+```
 
-### Open MIST connected to the Geth RPC
-`open -a /Applications/Mist.app --args --rpc /Users/peterpolman/Sites/daico/datadir/geth.ipc`
+There is no feature in the interface to remove old contracts. Do this through the dev tools in MIST.
+```
+# Clear all Token contracts and Custom contracts from mist
+CustomContracts.find().fetch().map(function(m) { CustomContracts.remove(m._id)})`
+Tokens.find().fetch().map((m) => { Tokens.remove(m._id) } )`
+```
 
-### Clear all Token contracts and Custom contracts from mist
-`$ CustomContracts.find().fetch().map(function(m) { CustomContracts.remove(m._id)})`
-`$ Tokens.find().fetch().map((m) => { Tokens.remove(m._id) } )`
+## Using Remix 
+```
+# Start remix listener for folder holding the solidity files
+remixd -s /Users/peterpolman/Sites/daico/contracts`
+```
 
-### Stop Geth and restart with --mine parameter
-`geth --datadir=./datadir/ --rpc --rpcport 7545 --rpccorsdomain "*" --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3,debug" --mine`
+## Deployment
 
-### Start remix and deploy contracts
-`remixd -s /Users/peterpolman/Sites/daico/contracts`
+Remove contract json files and migrate to geth network
+```
+# On geth RPC
+rm -rf build; 
+truffle migrate --network geth;
+```
 
-## Deploy contracts on the dev network
+```
+# On ganache RPC
+rm -rf build; 
+truffle migrate --network ganache;
+```
 
-### Remove contract json files and migrate to geth network
-`rm -rf build; truffle migrate --network geth;`
-`rm -rf build; truffle migrate --network ganache;`
-
-### Mist logs are stored here
-`/Users/peterpolman/Library/Application Support/Mist/logs/all.log`
+Mist logs are stored here:
+```
+/Users/peterpolman/Library/Application Support/Mist/logs/all.log`
+```
 
 ## After deployment:
 ```
