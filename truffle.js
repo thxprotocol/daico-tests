@@ -1,19 +1,20 @@
 module.exports = {
-  networks: {
-    ganache: {
-        host: "127.0.0.1",
-        port: 8545,
-        network_id: "5777",
-        gas: "4700000"
+    networks: {
+        ganache: {
+            host: "127.0.0.1",
+            port: 8545,
+            network_id: "5777"
+        },
+        geth: {
+            host: "localhost",
+            port: 7545,
+            network_id: "*"
+        }
     },
-    geth: {
-        host: "localhost",
-        port: 7545,
-        network_id: "*"
+    solc: {
+        optimizer: {
+            enabled: true,
+            runs: 200
+        }
     }
-  },
-  solc: {
-      opimizer: true,
-      runs: 200
-  }
 };

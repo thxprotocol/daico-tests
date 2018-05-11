@@ -5,7 +5,7 @@ var TheAbyssDAICO = artifacts.require("TheAbyssDAICO");
 
 module.exports = function(deployer, network, accounts) {
     deployer.deploy(ABYSS,
-        _listener = '0x0',
+        _listener = accounts[0],
         _owners = [accounts[0]],
         manager = accounts[0]
     )
@@ -16,37 +16,34 @@ module.exports = function(deployer, network, accounts) {
     })
     .then(function(){
         return deployer.deploy(PollManagedFund,
-            _teamWallet = accounts[0],
-            _referralTokenWallet = accounts[0],
-            _foundationTokenWallet = accounts[0],
-            _companyTokenWallet = accounts[0],
-            _reserveTokenWallet = accounts[0],
-            _bountyTokenWallet = accounts[0],
-            _advisorTokenWallet = accounts[0],
+            _teamWallet = accounts[1],
+            _referralTokenWallet = accounts[2],
+            _foundationTokenWallet = accounts[3],
+            _companyTokenWallet = accounts[4],
+            _reserveTokenWallet = accounts[5],
+            _bountyTokenWallet = accounts[6],
+            _advisorTokenWallet = accounts[7],
             _refundManager = accounts[0],
-            _owners = [accounts[0]],
+            _owners = [],
             {
-                from: accounts[0],
-                gas: '8500000',
-                gasPrice: '200000000000'
+                from: accounts[0]
             }
         );
     })
     .then(function() {
         return deployer.deploy(TheAbyssDAICO,
-            bnbTokenAddress = '0x0',
+            bnbTokenAddress = '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
             tokenAddress = ABYSS.address,
             fundAddress = PollManagedFund.address,
             reservationFundAddress = ReservationFund.address,
-            _bnbTokenWallet = accounts[0],
-            _referralTokenWallet = accounts[0],
-            _foundationTokenWallet = accounts[0],
-            _advisorsTokenWallet = accounts[0],
-            _companyTokenWallet = accounts[0],
-            _reserveTokenWallet = accounts[0],
-            _bountyTokenWallet = accounts[0],
+            _bnbTokenWallet = accounts[8],
+            _referralTokenWallet = accounts[2],
+            _foundationTokenWallet = accounts[3],
+            _advisorsTokenWallet = accounts[7],
+            _companyTokenWallet = accounts[4],
+            _reserveTokenWallet = accounts[5],
+            _bountyTokenWallet = accounts[6],
             _owner = accounts[0]
         );
     });
-
 };
