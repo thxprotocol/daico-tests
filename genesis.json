@@ -6,6 +6,20 @@
     "eip158Block": 0
   },
   "difficulty": "0x100",
-  "gasLimit": "0x8000000",
-  "alloc": {}
+  "gasLimit": "0x8500000",
+  "alloc": {
+    "C52852d09AfFa66B84Bb9E271cA792833c1c9A0a": { "balance": "100" },
+    "BF9e9645478EbdD55707c6e8B4C66Fd583c6d12d": { "balance": "100" },
+    "dCce5C64f20727c75ac834A0E2c76443368A6f96": { "balance": "100" },
+    "6440EAaA8029D967974fAD5Fbd32efC958bA12db": { "balance": "100" },
+    "20FB966106860717f76c9d5A3cEdD985d4e1D99e": { "balance": "100" },
+    "Cdff1B28851b94EF76ebd9810bebdB0085ff5101": { "balance": "100" },
+    "30793e062e712b2FD59FF474fB3193C159E571ac": { "balance": "100" },
+    "40840a567dAa58A6b969F1E3B4BDe6245bE7b1f8": { "balance": "100" },
+    "d1CdBFd2e7fc12ae6E5Cf804Bb84554155f7b0D8": { "balance": "100" },
+    "ff74dbADc4d1702e95e4Ab2A02356a37e78a45b9": { "balance": "100" },
+    "6C8BfF03c24f56a03fBEf26bb67685C5852CE38B": { "balance": "100" },
+    "356E2B2817a2b3eaC30D77A7E6a8aF1065C5b3F8": { "balance": "100" },
+    "CB5adf9c381E57950C5296C0F18b42F9B5445c61": { "balance": "100" },
+  }
 }
