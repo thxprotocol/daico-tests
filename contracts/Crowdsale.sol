@@ -10,7 +10,7 @@ import './Pausable.sol';
 import './ISimpleCrowdsale.sol';
 
 
-contract TheAbyssDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
+contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
     enum AdditionalBonusState {
         Unavailable,
         Active,
@@ -29,8 +29,8 @@ contract TheAbyssDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
     uint256 public constant ETHER_MIN_CONTRIB_USA = 0.2 ether;
     uint256 public constant ETHER_MAX_CONTRIB_USA = 20 ether;
 
-    uint256 public constant SALE_START_TIME = 1524060000; // 18.04.2018 14:00:00 UTC
-    uint256 public constant SALE_END_TIME = 1526479200; // 16.05.2018 14:00:00 UTC
+    uint256 public constant SALE_START_TIME = 1526459784; // Wed, 16 May 2018 10:36:24 +0200
+    uint256 public constant SALE_END_TIME = 1529138184; // Sat, 16 Jun 2018 10:36:24 +0200
 
     uint256 public constant BONUS_WINDOW_1_END_TIME = SALE_START_TIME + 2 days;
     uint256 public constant BONUS_WINDOW_2_END_TIME = SALE_START_TIME + 7 days;
@@ -103,7 +103,7 @@ contract TheAbyssDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
         _;
     }
 
-    function TheAbyssDAICO(
+    function OpenSocialDAICO(
         address bnbTokenAddress,
         address tokenAddress,
         address fundAddress,

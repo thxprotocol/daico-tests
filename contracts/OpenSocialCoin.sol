@@ -3,14 +3,14 @@ pragma solidity ^0.4.21;
 import './token/TransferLimitedToken.sol';
 
 
-contract ABYSS is TransferLimitedToken {
+contract OpenSocialCoin is TransferLimitedToken {
     uint256 public constant SALE_END_TIME = 1526479200; // 16.05.2018 14:00:00 UTC
 
-    function ABYSS(address _listener, address[] _owners, address manager) public
+    function OpenSocialCoin(address _listener, address[] _owners, address manager) public
         TransferLimitedToken(SALE_END_TIME, _listener, _owners, manager)
     {
-        name = "ABYSS";
-        symbol = "ABYSS";
+        name = "Open Social Coin";
+        symbol = "OSC";
         decimals = 18;
     }
 }

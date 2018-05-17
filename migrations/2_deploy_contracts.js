@@ -1,12 +1,12 @@
-var ABYSS = artifacts.require("ABYSS");
-var ReservationFund = artifacts.require("ReservationFund");
-var PollManagedFund= artifacts.require("PollManagedFund");
-var TheAbyssDAICO = artifacts.require("TheAbyssDAICO");
+const OpenSocialCoin = artifacts.require("OpenSocialCoin");
+const ReservationFund = artifacts.require("ReservationFund");
+const PollManagedFund= artifacts.require("PollManagedFund");
+const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
 
 module.exports = function(deployer, network, accounts) {
-    deployer.deploy(ABYSS,
+    deployer.deploy(OpenSocialCoin,
         _listener = accounts[0],
-        _owners = [accounts[0]],
+        _owners = [],
         manager = accounts[0]
     )
     .then(function(){
@@ -24,16 +24,13 @@ module.exports = function(deployer, network, accounts) {
             _bountyTokenWallet = accounts[6],
             _advisorTokenWallet = accounts[7],
             _refundManager = accounts[0],
-            _owners = [],
-            {
-                from: accounts[0]
-            }
+            _owners = []
         );
     })
     .then(function() {
-        return deployer.deploy(TheAbyssDAICO,
+        return deployer.deploy(OpenSocialDAICO,
             bnbTokenAddress = '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
-            tokenAddress = ABYSS.address,
+            tokenAddress = OpenSocialCoin.address,
             fundAddress = PollManagedFund.address,
             reservationFundAddress = ReservationFund.address,
             _bnbTokenWallet = accounts[8],
