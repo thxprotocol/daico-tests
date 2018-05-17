@@ -1,0 +1,24 @@
+{
+  "name": "daico",
+  "version": "1.0.0",
+  "description": "This repository holds the deployment scripts and experimental code for the  DAICO Smart Contracts needed for the OST Crowdsale.",
+  "main": "truffle.js",
+  "dependencies": {},
+  "devDependencies": {
+    "truffle": "^4.1.8"
+  },
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peterpolman/daico-smart-contracts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peterpolman/daico-smart-contracts/issues"
+  },
+  "homepage": "https://github.com/peterpolman/daico-smart-contracts#readme"
+}

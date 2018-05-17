@@ -24,10 +24,9 @@ Clone the repository with `git clone git@github.com:peterpolman/daico-smart-cont
 Add the development network to `truffle.js`:
 ```
 ganache: {
-    host: "localhost",
+    host: "127.0.0.1",
     port: 8545,
-    network_id: "5777",
-    gas: "4700000"
+    network_id: "5777"
 }
 ```
 Install truffle with `npm install truffle`
@@ -183,12 +182,8 @@ truffle migrate --network ganache;
 ```
 # On the test network
 rm -rf build;
-truffle exec ./scripts/deploy_token.js --network geth;
-truffle exec ./scripts/deploy_reservationfund.js --network geth;
-truffle exec ./scripts/deploy_pollmanagedfund.js --network geth;
-truffle exec ./scripts/deploy_crowdsale.js --network geth;
+truffle migrate --network geth;
 ```
-
 
 ## Configuration of the DAICO
 ```
@@ -233,33 +228,4 @@ web3.eth.sendTransaction({from: web3.eth.accounts[9], to: "0xb31ba2d2fc075b5d23b
 ```
 # Send ether from one account to the other
 web3.eth.sendTransaction({from: web3.eth.accounts[0], to: web3.eth.accounts[1], value: web3.toWei(10, "ether")});
-```
-
-**WARNING: Are processReservationContribution() and processReservationFundContribution() duplicates?**
-
-```
-# GOT STUCK HERE!
-
-ReservationFund.sol:
-
-69:         contributions[contributor] = safeAdd(contributions[contributor], msg.value);
-70:         tokensToIssue[contributor] = safeAdd(tokensToIssue[contributor], _tokensToIssue);
-71:         bonusTokensToIssue[contributor] = safeAdd(bonusTokensToIssue[contributor], _bonusTokensToIssue);
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-debug(ganache:0x1587aa21...)>
-
-ReservationFund.sol:
-
-69:         contributions[contributor] = safeAdd(contributions[contributor], msg.value);
-70:         tokensToIssue[contributor] = safeAdd(tokensToIssue[contributor], _tokensToIssue);
-71:         bonusTokensToIssue[contributor] = safeAdd(bonusTokensToIssue[contributor], _bonusTokensToIssue);
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-debug(ganache:0x1587aa21...)>
-
-Transaction halted with a RUNTIME ERROR.
-
-This is likely due to an intentional halting expression, like assert(), require() or revert(). It can also be due to out-of-gas exceptions. Please inspect your transaction parameters and contract code to determine the meaning of this error.
-"0xff74dbadc4d1702e95e4ab2a02356a37e78a45b9"
 ```
