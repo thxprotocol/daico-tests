@@ -1,9 +1,9 @@
 module.exports = {
     networks: {
         ganache: {
-            host: "127.0.0.1",
+            host: "localhost",
             port: 8545,
-            network_id: "5777"
+            network_id: "*"
         },
         geth: {
             host: "localhost",
