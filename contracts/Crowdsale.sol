@@ -74,8 +74,8 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
     uint256 public totalBNBContributed = 0;
     bool public bnbWithdrawEnabled = false;
 
-    uint256 public hardCap = 0; // World hard cap will be set right before Token Sale
-    uint256 public softCap = 0; // World soft cap will be set right before Token Sale
+    uint256 public hardCap = 22857 ether; // World hard cap will be set right before Token Sale
+    uint256 public softCap = 5714 ether; // World soft cap will be set right before Token Sale
 
     bool public bnbRefundEnabled = false;
 
