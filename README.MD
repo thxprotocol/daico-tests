@@ -1,5 +1,5 @@
-# DAICO Smart Contracts 
-This repository holds the deployment scripts and experimental code for the 
+# DAICO Smart Contracts
+This repository holds the deployment scripts and experimental code for the
 DAICO Smart Contracts needed for the OST Crowdsale.
 
 Clone the repository with `git clone git@github.com:peterpolman/daico-smart-contracts.git daico`
@@ -18,20 +18,47 @@ Clone the repository with `git clone git@github.com:peterpolman/daico-smart-cont
 
 **After deployment**
 
-1. Set the tokenPrice numerator and denominator through console with `setTokenPrice(uint256 _tokenPriceNum, uint256 _tokenPriceDenom)`
-2. Set the softCap property with `setSoftCap(uint256 _softCap)`
-3. Set the hardCap property with `setHardCap(uint256 _hardCap)`
-4. Set the crowdsale address in `ReservationFund.sol` with `setCrowdsaleAddress(address crowdsaleAddress)`
-5. Set the Crowdsale address and PollManagedFund address as owners of the `OpenSocialToken.sol` contract.
+```bash
+# Soft Cap 4000000 USD in ether (@ $700)
+OpenSocialDAICO.at(OpenSocialDAICO.address).setSoftCap(web3.toWei(5714, "ether"));
+# Hard Cap 16000000 USD in ether (@ $700)
+OpenSocialDAICO.at(OpenSocialDAICO.address).setHardCap(web3.toWei(22857, "ether"));
+
+# Start here if soft and hard cap are fixed in contract
+OpenSocialDAICO.at(OpenSocialDAICO.address).setTokenPrice(35000,1);
+OpenSocialDAICO.at(OpenSocialDAICO.address).setLockedTokens(LockedTokens.address);
+```
+
+```bash
+ReservationFund.at(ReservationFund.address).setCrowdsaleAddress(OpenSocialDAICO.address);
+```
+
+```bash
+PollManagedFund.at(PollManagedFund.address).setLockedTokenAddress(LockedTokens.address);
+PollManagedFund.at(PollManagedFund.address).setTokenAddress(OpenSocialCoin.address);
+PollManagedFund.at(PollManagedFund.address).setCrowdsaleAddress(OpenSocialDAICO.address);
+```
+
+```bash
+OpenSocialCoin.at(OpenSocialCoin.address).setOwners([OpenSocialDAICO.address, PollManagedFund.address]);
+```
+
 
 **Before contribution**
 
-1. Run through KYC process
+1. *Run through KYC process*
 2. Add given wallet address to lists with `addTolists()`
-3. 
+```bash
+# Adding address to whitelist, priviledged list, limited list and has an additional bonus
+OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[12], true, true, true, true);
+```
 
 **User contribution**
-1. 
+
+```bash
+# Send transaction
+web3.eth.sendTransaction({from: web3.eth.accounts[12], to: OpenSocialDAICO.address, value: web3.toWei(5, "ether")})
+```
 
 **After contribution**
-1. 
+1.

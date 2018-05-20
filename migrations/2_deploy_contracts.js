@@ -2,6 +2,7 @@ const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const ReservationFund = artifacts.require("ReservationFund");
 const PollManagedFund= artifacts.require("PollManagedFund");
 const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const LockedTokens = artifacts.require("LockedTokens");
 
 module.exports = function(deployer, network, accounts) {
     deployer.deploy(OpenSocialCoin,
@@ -24,7 +25,7 @@ module.exports = function(deployer, network, accounts) {
             _bountyTokenWallet = accounts[6],
             _advisorTokenWallet = accounts[7],
             _refundManager = accounts[0],
-            _owners = []
+            _owners = [accounts[0]]
         );
     })
     .then(function() {
@@ -41,6 +42,12 @@ module.exports = function(deployer, network, accounts) {
             _reserveTokenWallet = accounts[5],
             _bountyTokenWallet = accounts[6],
             _owner = accounts[0]
+        );
+    })
+    .then(function() {
+        return deployer.deploy(LockedTokens,
+            OpenSocialCoin.address,
+            OpenSocialDAICO.address
         );
     });
 };

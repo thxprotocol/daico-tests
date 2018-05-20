@@ -1,0 +1,23 @@
+ABYSS:
+0x0e8d6b471e332f140e7d9dbb99e5e3822f728da6
+====================================================
+
+Constructor parameters
+---------------------------------------------------
+
+eventListener:
+0x49db6ee4507132d1fdac92318e0e6150bf786728
+
+_owners:
+0x49db6ee4507132d1fdac92318e0e6150bf786728
+0xb84e224216fec19d8631a0ad187326bc48f91b6b
+
+manager:
+0x5eaf0a37346ff992199fbc4480c9ccc4137d9c1f
+
+
+Contract properties
+---------------------------------------------------
+
+limitedWalletsManager:
+0x5eaf0a37346ff992199fbc4480c9ccc4137d9c1f
