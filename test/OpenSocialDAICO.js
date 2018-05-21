@@ -101,7 +101,7 @@ contract('manager', function(accounts) {
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
             return OpenSocialDAICOInstance.sendTransaction({
-                from: accounts[12],
+                from: web3.eth.accounts[8],
                 to: OpenSocialDAICO.address,
                 value: web3.toWei(5, "ether")
             });
@@ -116,11 +116,11 @@ contract('manager', function(accounts) {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
-            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[11], true, true, true, true);
+            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[8], true, true, true, true);
         }).then(function(tx) {
-            return web3.eth.getBalance(ReservationFund.address);
+            return web3.eth.getBalance(PollManagedFund.address);
         }).then(function(balance) {
-            assert.equal(balance.valueOf(), web3.toWei(5, "ether"), "5 ether is contributed in the reservation fund");
+            assert.equal(balance.valueOf(), web3.toWei(5, "ether"), "5 ether is contributed in the poll managed fund");
         });
     });
 
@@ -128,10 +128,10 @@ contract('manager', function(accounts) {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
-            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[11], true, true, true, true);
+            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[9], true, true, true, true);
         }).then(function(tx) {
             return OpenSocialDAICOInstance.sendTransaction({
-                from: accounts[11],
+                from: web3.eth.accounts[9],
                 to: OpenSocialDAICO.address,
                 value: web3.toWei(5, "ether")
             });
@@ -141,4 +141,14 @@ contract('manager', function(accounts) {
             assert.equal(balance.valueOf(), web3.toWei(5, "ether"), "5 ether is contributed in the reservation fund");
         });
     });
+
+    console.log(OpenSocialCoin.address);
+    console.log(OpenSocialDAICO.address);
+    console.log(ReservationFund.address);
+    console.log(PollManagedFund.address);
+    console.log(LockedTokens.address);
+
+    console.log(web3.eth.accounts[8]);
+    console.log(web3.eth.accounts[9]);
+
 });
