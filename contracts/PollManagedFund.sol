@@ -48,7 +48,7 @@ contract PollManagedFund is Fund, DateTime, ITokenEventListener {
      * @dev PollManagedFund constructor
      * params - see Fund constructor
      */
-    function PollManagedFund(
+    constructor(
         address _teamWallet,
         address _referralTokenWallet,
         address _foundationTokenWallet,

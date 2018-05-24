@@ -35,7 +35,7 @@ contract ManagedToken is ERC20Token, MultiOwnable {
      * @param _listener Token listener(address can be 0x0)
      * @param _owners Owners list
      */
-    function ManagedToken(address _listener, address[] _owners) public {
+    constructor(address _listener, address[] _owners) public {
         if(_listener != address(0)) {
             eventListener = ITokenEventListener(_listener);
         }

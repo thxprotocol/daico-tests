@@ -21,7 +21,7 @@ contract MultiOwnable {
     /**
      * @dev MultiOwnable constructor sets the manager
      */
-    function MultiOwnable() public {
+    constructor() public {
         manager = msg.sender;
     }
 

@@ -103,7 +103,7 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
         _;
     }
 
-    function OpenSocialDAICO(
+    constructor(
         address bnbTokenAddress,
         address tokenAddress,
         address fundAddress,

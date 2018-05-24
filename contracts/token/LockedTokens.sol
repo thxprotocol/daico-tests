@@ -26,7 +26,7 @@ contract LockedTokens is SafeMath {
      * @param _token ERC20 compatible token contract
      * @param _crowdsaleAddress Crowdsale contract address
      */
-    function LockedTokens(IERC20Token _token, address _crowdsaleAddress) public {
+    constructor(IERC20Token _token, address _crowdsaleAddress) public {
         token = _token;
         crowdsaleAddress = _crowdsaleAddress;
     }

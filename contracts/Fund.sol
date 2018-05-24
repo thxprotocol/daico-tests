@@ -54,7 +54,7 @@ contract Fund is ICrowdsaleFund, SafeMath, MultiOwnable {
      * @param _advisorTokenWallet Advisor wallet address
      * @param _owners Contract owners
      */
-    function Fund(
+    constructor(
         address _teamWallet,
         address _referralTokenWallet,
         address _foundationTokenWallet,

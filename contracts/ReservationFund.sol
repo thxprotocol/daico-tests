@@ -19,7 +19,7 @@ contract ReservationFund is ICrowdsaleReservationFund, Ownable, SafeMath {
     event TransferToFund(address contributor, uint256 etherAmount);
     event FinishCrowdsale();
 
-    function ReservationFund(address _owner) public Ownable(_owner) {
+    constructor(address _owner) public Ownable(_owner) {
     }
 
     modifier onlyCrowdsale() {

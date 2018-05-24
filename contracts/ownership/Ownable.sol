@@ -14,7 +14,7 @@ contract Ownable {
     /**
     * @dev The Ownable constructor sets the original `owner` of the contract.
     */
-    function Ownable(address _owner) public {
+    constructor(address _owner) public {
         owner = _owner == address(0) ? msg.sender : _owner;
     }
 
