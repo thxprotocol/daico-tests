@@ -44,7 +44,7 @@ contract MultiOwnable {
             ownerByAddress[_owners[j]] = true;
         }
         owners = _owners;
-        SetOwners(_owners);
+        emit SetOwners(_owners);
     }
 
     function getOwners() public constant returns (address[]) {

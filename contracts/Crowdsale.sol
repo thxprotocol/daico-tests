@@ -341,7 +341,7 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
             tokenAmount,
             tokenBonusAmount
         );
-        ReservationFundContribution(contributor, amount, tokenAmount, tokenBonusAmount, now);
+        emit ReservationFundContribution(contributor, amount, tokenAmount, tokenBonusAmount, now);
     }
 
     /**
@@ -375,7 +375,7 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
         token.issue(msg.sender, tokenTotalAmount);
         totalBNBContributed = safeAdd(totalBNBContributed, amountBNB);
 
-        LogBNBContribution(msg.sender, amountBNB, tokenAmount, tokenBonusAmount, additionalBonusApplied, now);
+        emit LogBNBContribution(msg.sender, amountBNB, tokenAmount, tokenBonusAmount, additionalBonusApplied, now);
     }
 
     /**
@@ -426,7 +426,7 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
         fund.processContribution.value(etherAmount)(contributor);
         totalEtherContributed = safeAdd(totalEtherContributed, etherAmount);
         userTotalContributed[contributor] = safeAdd(userTotalContributed[contributor], etherAmount);
-        LogContribution(contributor, etherAmount, tokenAmount, tokenBonusAmount, additionalBonusApplied, now);
+        emit LogContribution(contributor, etherAmount, tokenAmount, tokenBonusAmount, additionalBonusApplied, now);
     }
 
     /**

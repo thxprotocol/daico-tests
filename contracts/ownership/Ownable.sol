@@ -40,7 +40,7 @@ contract Ownable {
     */
     function confirmOwnership() public {
         require(msg.sender == newOwner);
-        OwnershipTransferred(owner, newOwner);
+        emit OwnershipTransferred(owner, newOwner);
         owner = newOwner;
         newOwner = 0x0;
     }

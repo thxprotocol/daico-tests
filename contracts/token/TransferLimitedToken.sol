@@ -56,7 +56,7 @@ contract TransferLimitedToken is ManagedToken {
     function enableTransfers() public {
         require(msg.sender == limitedWalletsManager);
         allowTransfers = true;
-        TransfersEnabled();
+        emit TransfersEnabled();
     }
 
     /**

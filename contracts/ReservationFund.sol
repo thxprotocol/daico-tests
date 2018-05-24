@@ -34,7 +34,7 @@ contract ReservationFund is ICrowdsaleReservationFund, Ownable, SafeMath {
 
     function onCrowdsaleEnd() external onlyCrowdsale {
         crowdsaleFinished = true;
-        FinishCrowdsale();
+        emit FinishCrowdsale();
     }
 
 
@@ -88,7 +88,7 @@ contract ReservationFund is ICrowdsaleReservationFund, Ownable, SafeMath {
         bonusTokensToIssue[contributor] = 0;
 
         crowdsale.processReservationFundContribution.value(etherAmount)(contributor, tokenAmount, tokenBonusAmount);
-        TransferToFund(contributor, etherAmount);
+        emit TransferToFund(contributor, etherAmount);
     }
 
     /**
@@ -104,6 +104,6 @@ contract ReservationFund is ICrowdsaleReservationFund, Ownable, SafeMath {
         bonusTokensToIssue[contributor] = 0;
 
         contributor.transfer(amountToRefund);
-        RefundPayment(contributor, amountToRefund);
+        emit RefundPayment(contributor, amountToRefund);
     }
 }
