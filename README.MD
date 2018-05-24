@@ -6,6 +6,7 @@ Clone the repository with `git clone git@github.com:peterpolman/daico-smart-cont
 ## Index
 * [Installation](#installation)
 * [Start RPC](#start-rpc)
+* [Accounts and Wallets](#accounts-and-wallets)
 * [Deployment](#deployment)
 * [Configuration](#configuration)
 * [Management](#management)
@@ -27,8 +28,28 @@ Start ganache-cli with 10 accounts filled with 1000 ETH each and a pretty realis
 
 ```bash
 # Start ganache-cli
-ganache-cli --accounts=10 --defaultBalanceEther=1000 --gasPrice=10225000000 --gasLimit=8500000
+ganache-cli --accounts=15 --defaultBalanceEther=1000 --gasPrice=10225000000 --gasLimit=8500000
 ```
+
+## Accounts and wallets
+
+**accounts[0]:** Coinbase, contract owner and has manager roles
+
+**accounts[1]:** Team Wallet
+**accounts[2]:** ReferralToken Wallet
+**accounts[3]:** FoundationToken Wallet
+**accounts[4]:** CompanyToken Wallet
+**accounts[5]:** ReserveToken Wallet
+**accounts[6]:** BountyToken Wallet
+**accounts[7]:** AdvisorToken Wallet
+**accounts[8]:** BnbToken Wallet
+
+**accounts[10]:** Test accounts #0
+**accounts[11]:** Test accounts #1
+**accounts[12]:** Test accounts #2
+**accounts[13]:** Test accounts #3
+**accounts[14]:** Test accounts #4
+**accounts[15]:** Test accounts #5
 
 ## Deployment
 
@@ -116,25 +137,29 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).privilegedList.call(web3.eth.account
 OpenSocialDAICO.at(OpenSocialDAICO.address).additionalBonusOwnerState.call(web3.eth.accounts[10])
 ```
 
+### During the crowdsale
+
+```javascript
+// Check the totalEtherContributed during the crowdsale
+OpenSocialDAICO.at(OpenSocialDAICO.address).totalEtherContributed.call();
+
+```
+
 ### Finalizing the Crowdsale
 
 ```javascript
+// Check the current state of the PollManagedFund
+PollManagedFund.at(PollManagedFund.address).state.call();
 // Check if coin transfers are allowed
 OpenSocialCoin.at(OpenSocialCoin.address).allowTransfers.call()
 // Check if issuance is finished
 OpenSocialCoin.at(OpenSocialCoin.address).issuanceFinished.call()
 // Allow transfers
 OpenSocialCoin.at(OpenSocialCoin.address).enableTransfers()
-// Transfer 100 OSC from accounts 10 to accounts 5
-OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[5], 100)
-// Check the totalEtherContributed during the crowdsale
-OpenSocialDAICO.at(OpenSocialDAICO.address).totalEtherContributed.call();
+// Transfer 100 OSC from accounts 10 to accounts 11
+OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 100)
 // Finalize the crowdsale when sale is ended or hardcap is met
 OpenSocialDAICO.at(OpenSocialDAICO.address).finalizeCrowdsale();
-// Check the current state of the PollManagedFund
-PollManagedFund.at(PollManagedFund.address).state.call();
-// Call refund method from a specific accounts (contributors do this themselves when PollManagedFund.state == Refund == 3)
-PollManagedFund.at(PollManagedFund.address).refundTokenHolder({ from: web3.eth.accounts[10] })
 // Check the amount a user has contributed
 OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.accounts[10])
 
@@ -142,6 +167,14 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.a
 
 #### Refunding contributors
 
+```javascript
+// Force refund state (only refundManager as defined during deployment)
+PollManagedFund.at(PollManagedFund.address).forceRefund({ from: web3.eth.accounts[0] })
+// Check the current state of the PollManagedFund
+PollManagedFund.at(PollManagedFund.address).state.call();
+// Call refund method from a specific accounts when contract is in Refund state
+PollManagedFund.at(PollManagedFund.address).refundTokenHolder({ from: web3.eth.accounts[10] })
+```
 ...
 
 #### Voting
