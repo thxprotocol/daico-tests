@@ -36,19 +36,31 @@ ganache-cli --accounts=15 --defaultBalanceEther=1000 --gasPrice=10225000000 --ga
 **accounts[0]:** Coinbase, contract owner and has manager roles
 
 **accounts[1]:** Team Wallet
+
 **accounts[2]:** ReferralToken Wallet
+
 **accounts[3]:** FoundationToken Wallet
+
 **accounts[4]:** CompanyToken Wallet
+
 **accounts[5]:** ReserveToken Wallet
+
 **accounts[6]:** BountyToken Wallet
+
 **accounts[7]:** AdvisorToken Wallet
+
 **accounts[8]:** BnbToken Wallet
 
 **accounts[10]:** Test accounts #0
+
 **accounts[11]:** Test accounts #1
+
 **accounts[12]:** Test accounts #2
+
 **accounts[13]:** Test accounts #3
+
 **accounts[14]:** Test accounts #4
+
 **accounts[15]:** Test accounts #5
 
 ## Deployment
