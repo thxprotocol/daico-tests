@@ -133,6 +133,7 @@ PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 
  * @param isInLimitedList (?)
  * @param hasAdditionalBonus (Should check compute additional bonuses because of contrib in time window)
  */
+
 // Add address to whitelist with no additional bonus
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, false);
 // Add address to whitelist with additional bonus
@@ -141,6 +142,7 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], tr
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, false);
 // Add address to privilegedList with additional bonus
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, true);
+
 // Check if user is in whiteList
 OpenSocialDAICO.at(OpenSocialDAICO.address).whiteList.call(web3.eth.accounts[10])
 // Check if user is in privilegedList
@@ -177,7 +179,7 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.a
 
 ```
 
-#### Refunding contributors
+### Refunding contributors
 
 ```javascript
 // Force refund state (only refundManager as defined during deployment)
@@ -189,7 +191,7 @@ PollManagedFund.at(PollManagedFund.address).refundTokenHolder({ from: web3.eth.a
 ```
 ...
 
-#### Voting
+### Voting
 
 ...
 
