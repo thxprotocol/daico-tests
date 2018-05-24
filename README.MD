@@ -4,18 +4,29 @@ This repository holds the Smart Contracts, deployment, test and configuration sc
 Clone the repository with `git clone git@github.com:peterpolman/daico-smart-contracts.git daico`
 
 ## Index
+* [Installation](#installation)
 * [Start RPC](#start-rpc)
 * [Deployment](#deployment)
 * [Configuration](#configuration)
 * [Management](#management)
 * [Automated Testing](#automated-testing)
 
+## Installation
+
+We use the truffle toolbox to interact with the RPC. It gives us migration, debug and console interfaces. For development purposes we use the ganache command line interface. With brew we need to install the ethereum packages so we can use the solidity compiler.
+
+```bash
+npm install -g truffle
+npm install -g ganache-cli
+brew install ethereum/ethereum
+```
+
 ## Start RPC
 
 Start ganache-cli with 10 accounts filled with 1000 ETH each and a pretty realistic gas configuration
 
 ```bash
-# start ganache-cli
+# Start ganache-cli
 ganache-cli --accounts=10 --defaultBalanceEther=1000 --gasPrice=10225000000 --gasLimit=8500000
 ```
 
