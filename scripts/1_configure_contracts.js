@@ -10,9 +10,9 @@ const PollManagedFund = artifacts.require("PollManagedFund");
 
 module.exports = async function(callback) {
   const softCap = 1500; // 5714 in ETH
-  const hardCap = 2500; // 22857in ETH
-  const tokenPriceNum = 35000;  // in OSC
-  const tokenPriceDenom = 1;  // in ETH
+  const hardCap = 2500; // 22857 in ETH
+  const tokenPriceNum = 35000;  // 35000 in OSC
+  const tokenPriceDenom = 1;  // 1 in ETH
 
   console.log("Configuring OpenSocialCoin at " + OpenSocialCoin.address);
   console.log("... setting owners to " + OpenSocialDAICO.address + " and " + PollManagedFund.address);
