@@ -33,35 +33,21 @@ ganache-cli --accounts=15 --defaultBalanceEther=1000 --gasPrice=10225000000 --ga
 
 ## Accounts and wallets
 
-**accounts[0]:** Coinbase, contract owner and has manager roles
-
-**accounts[1]:** Team Wallet
-
-**accounts[2]:** ReferralToken Wallet
-
-**accounts[3]:** FoundationToken Wallet
-
-**accounts[4]:** CompanyToken Wallet
-
-**accounts[5]:** ReserveToken Wallet
-
-**accounts[6]:** BountyToken Wallet
-
-**accounts[7]:** AdvisorToken Wallet
-
-**accounts[8]:** BnbToken Wallet
-
-**accounts[10]:** Test accounts #0
-
-**accounts[11]:** Test accounts #1
-
-**accounts[12]:** Test accounts #2
-
-**accounts[13]:** Test accounts #3
-
-**accounts[14]:** Test accounts #4
-
-**accounts[15]:** Test accounts #5
+* **accounts[0]:** Coinbase, contract owner and has manager roles
+* **accounts[1]:** Team Wallet
+* **accounts[2]:** ReferralToken Wallet
+* **accounts[3]:** FoundationToken Wallet
+* **accounts[4]:** CompanyToken Wallet
+* **accounts[5]:** ReserveToken Wallet
+* **accounts[6]:** BountyToken Wallet
+* **accounts[7]:** AdvisorToken Wallet
+* **accounts[8]:** BnbToken Wallet
+* **accounts[10]:** Test accounts #0
+* **accounts[11]:** Test accounts #1
+* **accounts[12]:** Test accounts #2
+* **accounts[13]:** Test accounts #3
+* **accounts[14]:** Test accounts #4
+* **accounts[15]:** Test accounts #5
 
 ## Deployment
 
@@ -74,6 +60,14 @@ Some statics need to be set in the contracts. Follow these steps:
 5. Set the percentages in the `finalizeCrowdsale()` function in `Crowdsale.sol` to reflect the correct token allocation.
 
 The migration script will deploy the contracts on the Ganache blockchain. Make sure it is started and has at least 9 accounts preconfigured.
+
+These contracts will be deployed and accessible:
+
+* **Crowdsale.sol:** The OpenSocialDAICO contract that distributes payments to the correct funds and allows contributors to refund.
+* **PollManagedFund.sol:** The fund holding the teams ETH, releasing some each month depending on the tap configuration
+* **ReservationFund.sol:** The fund holding ETH send to the Crowdsale contract by contributors prior to passing their KYC
+* **LockedTokens.sol:** Contract responsible for locking tokens for a specific amount of time
+* **OpenSocialCoin.sol:** The Token contract listing all contributors that are allowed to have tokens.
 
 ```bash
 # Remove previous builds and deploy the crowdsale with the deployment script provided in /migrations/2_deploy_contracts.js
