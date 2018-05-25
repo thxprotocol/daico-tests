@@ -4,13 +4,17 @@ const LockedTokens = artifacts.require("LockedTokens");
 const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
-contract('manager', function(accounts) {
+contract('OpenSocialDAICO', function(accounts) {
+    let softCap = 1500;
+    let hardCap = 2500;
+    let tokenPriceNum = 35000;
+    let tokenPriceDenom = 1;
 
-    it("should set the owners of the token contract", function() {
+    it("The manager should be able to set the owners of the token contract", function() {
         let OpenSocialCoinInstance;
         return OpenSocialCoin.deployed().then(function(instance) {
             OpenSocialCoinInstance = instance;
-            return OpenSocialCoinInstance.setOwners([OpenSocialDAICO.address, PollManagedFund.address, LockedTokens.address]);
+            return OpenSocialCoinInstance.setOwners([OpenSocialDAICO.address, PollManagedFund.address]);
         }).then(function() {
             return OpenSocialCoinInstance.owners.call(0);
         }).then(function(firstOwner) {
@@ -21,7 +25,7 @@ contract('manager', function(accounts) {
         });
     });
 
-    it("should set the locked token address", function() {
+    it("The manager should be able to set the locked token address on the Poll Managed Fund contract", function() {
         let PollManagedFundInstance;
         return PollManagedFund.deployed().then(function(instance) {
             PollManagedFundInstance = instance;
@@ -33,7 +37,7 @@ contract('manager', function(accounts) {
         });
     });
 
-    it("should set the token address", function() {
+    it("The manager should be able to set the token address on the Poll Managed Fund contract", function() {
         let PollManagedFundInstance;
         return PollManagedFund.deployed().then(function(instance) {
             PollManagedFundInstance = instance;
@@ -45,7 +49,7 @@ contract('manager', function(accounts) {
         });
     });
 
-    it("should set the crowdsale address on poll managed fund", function() {
+    it("The manager should be able to set the crowdsale address on Poll Managed Fund contract", function() {
         let PollManagedFundInstance;
         return PollManagedFund.deployed().then(function(instance) {
             PollManagedFundInstance = instance;
@@ -57,7 +61,7 @@ contract('manager', function(accounts) {
         });
     });
 
-    it("should set the crowdsale address on reservation fund", function() {
+    it("The manager should be able to set the crowdsale address on Reservation Fund contract", function() {
         let ReservationFundInstance;
         return ReservationFund.deployed().then(function(instance) {
             ReservationFundInstance = instance;
@@ -69,49 +73,46 @@ contract('manager', function(accounts) {
         });
     });
 
-    it("should set the soft cap", function() {
+    it("The manager should be able to set the soft cap in the Crowdsale contract", function() {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
-            return OpenSocialInstance.setTokenPrice(35000, 1);
+            return instance.setSoftCap(web3.toWei(softCap, "ether"));
         }).then(function() {
-            return OpenSocialInstance.tokenPriceNum.call();
-        }).then(function(tokenPriceNum) {
-            assert.equal(tokenPriceNum, 35000, "35000 is set as token price numerator");
-            return OpenSocialInstance.tokenPriceDenom.call();
-        }).then(function(tokenPriceDenom) {
-            assert.equal(tokenPriceDenom, 1, "1 is set as token price denominator");
+            return OpenSocialInstance.softCap.call();
+        }).then(function(r) {
+            assert.equal(web3.fromWei(r.valueOf(), "ether"), softCap, softCap + " ETH is not set as soft cap");
         });
     });
 
-    it("should set the hard cap", function() {
+    it("The manager should be able to set the hard cap in the Crowdsale contract", function() {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
-            return instance.setHardCap(22857, 1);
+            return instance.setHardCap(web3.toWei(hardCap, "ether"));
         }).then(function() {
             return OpenSocialInstance.hardCap.call();
-        }).then(function(hardCap) {
-            assert.equal(hardCap, 22857, "22857 is not set as hard cap");
+        }).then(function(r) {
+            assert.equal(web3.fromWei(r.valueOf(), "ether"), hardCap, hardCap + " ETH is not set as hard cap");
         });
     });
 
-    it("should set the token price", function() {
+    it("The manager should be able to set the token price in the Crowdsale contract", function() {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
             return OpenSocialInstance.setTokenPrice(35000, 1);
         }).then(function() {
             return OpenSocialInstance.tokenPriceNum.call();
-        }).then(function(tokenPriceNum) {
-            assert.equal(tokenPriceNum, 35000, "35000 is set as token price numerator");
+        }).then(function(r) {
+            assert.equal(r, tokenPriceNum, tokenPriceNum + " is not set as token price numerator");
             return OpenSocialInstance.tokenPriceDenom.call();
-        }).then(function(tokenPriceDenom) {
-            assert.equal(tokenPriceDenom, 1, "1 is set as token price denominator");
+        }).then(function(r) {
+            assert.equal(r, tokenPriceDenom, tokenPriceDenom + " is not set as token price denominator");
         });
     });
 
-    it("should set the locked token address", function() {
+    it("The manager should be able to set the locked token address in the Crowdsale contract", function() {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
@@ -119,65 +120,87 @@ contract('manager', function(accounts) {
         }).then(function() {
             return OpenSocialDAICOInstance.lockedTokens.call();
         }).then(function(lockedTokens) {
-            assert.equal(lockedTokens, LockedTokens.address, "lockedTokens address is set to " + LockedTokens.address);
+            assert.equal(lockedTokens, LockedTokens.address, "lockedTokens address is not set to " + LockedTokens.address);
         });
     });
 
-    it("should transfer contributed ether to the reservation fund", function() {
+    it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", function() {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
             return OpenSocialDAICOInstance.sendTransaction({
-                from: web3.eth.accounts[8],
+                from: web3.eth.accounts[10],
                 to: OpenSocialDAICO.address,
-                value: web3.toWei(5, "ether")
+                value: web3.toWei(250, "ether")
             });
         }).then(function(tx) {
             return web3.eth.getBalance(ReservationFund.address);
-        }).then(function(balance) {
-            assert.equal(balance.valueOf(), web3.toWei(5, "ether"), "5 ether is contributed in the reservation fund");
+        }).then(function(r) {
+            assert.equal(r.valueOf(), web3.toWei(250, "ether"), "the balance of the Reservation Fund is " + r.valueOf() + " ETH and not " + "250 ETH");
         });
     });
 
-    it("should add account 11 address to lists", function() {
+    it("Contributions in the Reservation Fund should be transfered to the Poll Managed Fund when the contributor becomes whitelisted", function() {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
-            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[8], true, true, true, true);
+            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[10], true, false, false, false);
         }).then(function(tx) {
             return web3.eth.getBalance(PollManagedFund.address);
-        }).then(function(balance) {
-            assert.equal(balance.valueOf(), web3.toWei(5, "ether"), "5 ether is contributed in the poll managed fund");
+        }).then(function(r) {
+            assert.equal(r.valueOf(), web3.toWei(250, "ether"), "the balance of the Poll Managed Fund is " + r.valueOf() + " ETH and not " + "250 ETH");
+        }).then(function(tx) {
+            return web3.eth.getBalance(ReservationFund.address);
+        }).then(function(r) {
+            assert.equal(r.valueOf(), web3.toWei(0, "ether"), "the balance of the Reservation Fund is " + r.valueOf() + " ETH and not " + "0 ETH");
         });
     });
 
-    it("should transfer contributed ether to the poll managed fund", function() {
+    it("A contributor should be able to contribute to the Poll Managed Fund if contributor is already whitelisted", function() {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
-            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[9], true, true, true, true);
+            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[11], true, false, false, false);
         }).then(function(tx) {
             return OpenSocialDAICOInstance.sendTransaction({
-                from: web3.eth.accounts[9],
+                from: web3.eth.accounts[11],
                 to: OpenSocialDAICO.address,
-                value: web3.toWei(5, "ether")
+                value: web3.toWei(500, "ether")
             });
         }).then(function(tx) {
             return web3.eth.getBalance(PollManagedFund.address);
-        }).then(function(balance) {
-            assert.equal(balance.valueOf(), web3.toWei(10, "ether"), "10 ether is contributed in the reservation fund"); // Plus 5 eth from previous contribution
+        }).then(function(r) {
+            // Add another assertaton that checks if 5 ether is substracted from account 10
+            // Add another assertion that checks if the amount of contributors is 2
+            assert.equal(web3.fromWei(r.valueOf(), "ether"), 750, "750 ether in total is not contributed in the reservation fund");
         });
     });
 
+    it("A contributor should be able to refund its payment when soft cap is not met", function() {
+        let PollManagedFundInstance;
+        let OpenSocialDAICOInstance;
+        let oldBalance = web3.eth.getBalance(web3.eth.accounts[11]);
 
+        return OpenSocialDAICO.deployed().then(function(instance) {
+            OpenSocialDAICOInstance = instance;
+            return OpenSocialDAICOInstance.forceCrowdsaleRefund();
+        }).then(function() {
+            return PollManagedFund.deployed();
+        }).then(function(instance) {
+            PollManagedFundInstance = instance;
+            return PollManagedFundInstance.state.call();
+        }).then(function(r) {
+            assert.equal(r.valueOf(), 1, "The current state is " + r.valueOf() + " and not " + 1 + ".");
 
-    console.log("OpenSocialCoinContract: " + OpenSocialCoin.address);
-    console.log("OpenSocialDAICO: " + OpenSocialDAICO.address);
-    console.log("ReservationFund: " + ReservationFund.address);
-    console.log("PollManagedFund: " + PollManagedFund.address);
-    console.log("LockedTokens: " + LockedTokens.address);
+            return PollManagedFundInstance.refundCrowdsaleContributor({ from: web3.eth.accounts[11] });
+        }).then(function(r) {
+            let currentBalance = web3.eth.getBalance(web3.eth.accounts[11]);
+            let newBalance = parseInt(web3.fromWei(currentBalance, "ether").valueOf());
+            let calculatedNewBalance = parseInt(web3.fromWei(oldBalance, "ether").valueOf()) + 500;
 
-    console.log("Account 8: " + web3.eth.accounts[8]);
-    console.log("Account 9: " + web3.eth.accounts[9]);
+            assert.equal(newBalance, calculatedNewBalance, "The new balance doesn't equal the old balance with refuned 500 ETH");
+        });
+    });
+
 
 });
