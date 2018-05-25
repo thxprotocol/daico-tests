@@ -177,11 +177,11 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.a
 
 ```javascript
 // Force refund state (only refundManager as defined during deployment)
-PollManagedFund.at(PollManagedFund.address).forceRefund({ from: web3.eth.accounts[0] })
+OpenSocialDAICO.at(OpenSocialDAICO.address).forceCrowdsaleRefund()
 // Check the current state of the PollManagedFund
 PollManagedFund.at(PollManagedFund.address).state.call();
 // Call refund method from a specific accounts when contract is in Refund state
-PollManagedFund.at(PollManagedFund.address).refundTokenHolder({ from: web3.eth.accounts[10] })
+PollManagedFund.at(PollManagedFund.address).refundCrowdsaleContributor({ from: web3.eth.accounts[10] })
 ```
 ...
 
