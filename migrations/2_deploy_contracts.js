@@ -41,6 +41,7 @@ module.exports = function(deployer, network, accounts) {
             _companyTokenWallet = accounts[4],
             _reserveTokenWallet = accounts[5],
             _bountyTokenWallet = accounts[6],
+            _teamWallet = accounts[1],
             _owner = accounts[0]
         );
     })

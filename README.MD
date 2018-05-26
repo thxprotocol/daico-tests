@@ -103,7 +103,7 @@ web3.eth.getBalance(ReservationFund.address);
 // Check the current amount of ETH in the PollManagedFund
 web3.eth.getBalance(PollManagedFund.address);
 // Send 5 ETH from account 10 to crowdsale
-OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({from: web3.eth.accounts[10], to: OpenSocialDAICO.address, value: web3.toWei(900, "ether")});
+OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({from: web3.eth.accounts[10], to: OpenSocialDAICO.address, value: web3.toWei(500, "ether")});
 ```
 
 ### Adding an address to a list.
@@ -112,7 +112,7 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({from: web3.eth.acco
 Within the first day of the crowdsale whiteListed addresses can contribute a minimum of 0.2 ETH up to a maximum of 20 ETH.
 
 #### PrivilegedList:
-PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 3000 ETH.
+PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 3000 ETH. Set the hasAdditionalBonus parameter true to make sure the Private Sale contributor receives its 20% bonus.
 
 #### LimitedList:
 *This needs more research!*
@@ -121,21 +121,25 @@ PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 
 /*
  * Adding address to whitelist, priviledged list, limited list and has an additional bonus
  *
- * @param account = accounts[12]
+ * @param account = accounts[10]
  * @param isInWhiteList (min 0.2 ETH, max 20 ETH)
  * @param isInPrivilegedList (min 100 ETH, max 3000 ETH)
- * @param isInLimitedList (?)
- * @param hasAdditionalBonus (Should check compute additional bonuses because of contrib in time window)
+ * @param isInLimitedList (USA contributors, tokens are locked for 1 year)
+ * @param hasAdditionalBonus
  */
 
-// Add address to whitelist with no additional bonus
+// If you need to add a user to multiple lists use this method.
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, false);
 // Add address to whitelist with additional bonus
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, true);
+OpenSocialDAICO.at(OpenSocialDAICO.address).addToWhiteList(web3.eth.accounts[10]);
 // Add address to privilegedList with no additional bonus
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, false);
+OpenSocialDAICO.at(OpenSocialDAICO.address).addToPrivilegedList(web3.eth.accounts[10]);
 // Add address to privilegedList with additional bonus
 OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, true);
+OpenSocialDAICO.at(OpenSocialDAICO.address).addToPrivilegedList(web3.eth.accounts[10]);
+OpenSocialDAICO.at(OpenSocialDAICO.address).addAdditionalBonusMember(web3.eth.accounts[10]);
 
 // Check if user is in whiteList
 OpenSocialDAICO.at(OpenSocialDAICO.address).whiteList.call(web3.eth.accounts[10])
@@ -150,7 +154,8 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).additionalBonusOwnerState.call(web3.
 ```javascript
 // Check the totalEtherContributed during the crowdsale
 OpenSocialDAICO.at(OpenSocialDAICO.address).totalEtherContributed.call();
-
+// Check token amount of user
+OpenSocialCoin.at(OpenSocialCoin.address).totalSupply.call()
 ```
 
 ### Finalizing the Crowdsale

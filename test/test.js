@@ -5,6 +5,7 @@ const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
 contract('OpenSocialDAICO', function(accounts) {
+    let privateSaleHardCap = 655;
     let softCap = 1500;
     let hardCap = 2500;
     let tokenPriceNum = 35000;
@@ -73,6 +74,18 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
+    it("The manager should be able to set the private sale hard cap in the Crowdsale contract", function() {
+        let OpenSocialInstance;
+        return OpenSocialDAICO.deployed().then(function(instance) {
+            OpenSocialInstance = instance;
+            return instance.setPrivateSaleHardCap(web3.toWei(privateSaleHardCap, "ether"));
+        }).then(function() {
+            return OpenSocialInstance.privateSaleHardCap.call();
+        }).then(function(r) {
+            assert.equal(web3.fromWei(r.valueOf(), "ether"), privateSaleHardCap, privateSaleHardCap + " ETH is not set as hard cap");
+        });
+    });
+
     it("The manager should be able to set the soft cap in the Crowdsale contract", function() {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
@@ -124,7 +137,53 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", function() {
+    it("A privileged contributor should be able to contribute to the teamWallet if contributor is in privilegedList", function() {
+        let OpenSocialDAICOInstance;
+        let oldTeamWalletBalance;
+
+        return OpenSocialDAICO.deployed().then(function(instance) {
+            OpenSocialDAICOInstance = instance;
+            return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[12], false, true, false, true);
+        }).then(function() {
+            return OpenSocialDAICOInstance.teamWallet.call();
+        }).then(function(teamWalletAddress) {
+            return web3.eth.getBalance(teamWalletAddress);
+        }).then(function(r) {
+            oldTeamWalletBalance = web3.fromWei(r.valueOf(), "ether");
+
+            return OpenSocialDAICOInstance.sendTransaction({
+                from: web3.eth.accounts[12],
+                to: OpenSocialDAICO.address,
+                value: web3.toWei(500, "ether")
+            });
+        }).then(function() {
+            return OpenSocialDAICOInstance.teamWallet.call();
+        }).then(function(teamWalletAddress) {
+            return web3.eth.getBalance(teamWalletAddress);
+        }).then(function(r) {
+            let newTeamWalletbalance = web3.fromWei(r.valueOf(), "ether");
+            let calculatedNewTeamWalletBalance = parseInt(oldTeamWalletBalance) + 500;
+            assert.equal(newTeamWalletbalance, calculatedNewTeamWalletBalance, "500 ether is not added to the teamWallet");
+        });
+    });
+
+    // TRAVEL IN TIME INTO THE PUBLIC SALE PERIOD
+    const SECONDS_IN_A_DAY = 86400;
+    const jsonrpc = '2.0'
+    const id = 0
+
+    const send = (method, params = []) => {
+      web3.currentProvider.send({ id, jsonrpc, method, params })
+    }
+
+    const timeTravel = async seconds => {
+      await send('evm_increaseTime', [seconds])
+      await send('evm_mine')
+    }
+
+    it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", async function() {
+        await timeTravel(SECONDS_IN_A_DAY * 100)
+
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
