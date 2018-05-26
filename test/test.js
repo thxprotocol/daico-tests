@@ -3,20 +3,44 @@ const ReservationFund = artifacts.require("ReservationFund");
 const LockedTokens = artifacts.require("LockedTokens");
 const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
+const timeTravel = require("../scripts/timeTravel.js");
 
-contract('OpenSocialDAICO', function(accounts) {
+contract('OpenSocialDAICO', async (accounts) => {
+    const SECONDS_IN_A_DAY = 86400;
+
     let privateSaleHardCap = 655;
     let softCap = 1500;
     let hardCap = 2500;
     let tokenPriceNum = 35000;
     let tokenPriceDenom = 1;
+    let privateSaleStartTime;
+    let crowdSaleStartTime;
+    let daysUntilPrivateSale;
+    let daysUntilCrowdSale;
 
-    it("The manager should be able to set the owners of the token contract", function() {
+    before(async () => {
+      OpenSocialDAICO.deployed().then(function(instance) {
+          OpenSocialDAICOInstance = instance;
+          return OpenSocialDAICOInstance.PRIVATE_SALE_START_TIME.call();
+      }).then(function(r) {
+          privateSaleStartTime = r.valueOf();
+          return OpenSocialDAICOInstance.SALE_START_TIME.call();
+      }).then(async (r) => {
+          crowdSaleStartTime = r.valueOf();
+
+          let now = Math.floor(Date.now() / 1000);
+          daysUntilPrivateSale = Math.ceil( (privateSaleStartTime - now) / SECONDS_IN_A_DAY );
+
+          await timeTravel(SECONDS_IN_A_DAY * daysUntilPrivateSale) // Travel to the private sale start date
+      });
+    })
+
+    it("The manager should be able to set the owners of the token contract", () => {
         let OpenSocialCoinInstance;
         return OpenSocialCoin.deployed().then(function(instance) {
             OpenSocialCoinInstance = instance;
             return OpenSocialCoinInstance.setOwners([OpenSocialDAICO.address, PollManagedFund.address]);
-        }).then(function() {
+        }).then(() => {
             return OpenSocialCoinInstance.owners.call(0);
         }).then(function(firstOwner) {
             assert.equal(firstOwner, OpenSocialDAICO.address, "OpenSocialDAICO is not set to " + OpenSocialDAICO.adress);
@@ -26,96 +50,96 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    it("The manager should be able to set the locked token address on the Poll Managed Fund contract", function() {
+    it("The manager should be able to set the locked token address on the Poll Managed Fund contract", () => {
         let PollManagedFundInstance;
         return PollManagedFund.deployed().then(function(instance) {
             PollManagedFundInstance = instance;
             return PollManagedFundInstance.setLockedTokenAddress(LockedTokens.address)
-        }).then(function() {
+        }).then(() => {
             return PollManagedFundInstance.lockedTokenAddress.call();
         }).then(function(lockedTokenAddress) {
           assert.equal(lockedTokenAddress, LockedTokens.address, "lockedTokens address is not set to " + LockedTokens.adress);
         });
     });
 
-    it("The manager should be able to set the token address on the Poll Managed Fund contract", function() {
+    it("The manager should be able to set the token address on the Poll Managed Fund contract", () => {
         let PollManagedFundInstance;
         return PollManagedFund.deployed().then(function(instance) {
             PollManagedFundInstance = instance;
             return PollManagedFundInstance.setTokenAddress(OpenSocialCoin.address)
-        }).then(function() {
+        }).then(() => {
             return PollManagedFundInstance.token.call();
         }).then(function(tokenAddress) {
           assert.equal(tokenAddress, OpenSocialCoin.address, "token address is not set to the correct address " + OpenSocialCoin.adress);
         });
     });
 
-    it("The manager should be able to set the crowdsale address on Poll Managed Fund contract", function() {
+    it("The manager should be able to set the crowdsale address on Poll Managed Fund contract", () => {
         let PollManagedFundInstance;
         return PollManagedFund.deployed().then(function(instance) {
             PollManagedFundInstance = instance;
             return PollManagedFundInstance.setCrowdsaleAddress(OpenSocialDAICO.address)
-        }).then(function() {
+        }).then(() => {
             return PollManagedFundInstance.crowdsaleAddress.call();
         }).then(function(crowdsaleAddress) {
           assert.equal(crowdsaleAddress, OpenSocialDAICO.address, "crowdsale address is set");
         });
     });
 
-    it("The manager should be able to set the crowdsale address on Reservation Fund contract", function() {
+    it("The manager should be able to set the crowdsale address on Reservation Fund contract", () => {
         let ReservationFundInstance;
         return ReservationFund.deployed().then(function(instance) {
             ReservationFundInstance = instance;
             return ReservationFundInstance.setCrowdsaleAddress(OpenSocialDAICO.address);
-        }).then(function() {
+        }).then(() => {
             return ReservationFundInstance.crowdsale.call();
         }).then(function(crowdsaleAddress) {
             assert.equal(crowdsaleAddress, OpenSocialDAICO.address, "crowdsale address is set");
         });
     });
 
-    it("The manager should be able to set the private sale hard cap in the Crowdsale contract", function() {
+    it("The manager should be able to set the private sale hard cap in the Crowdsale contract", () => {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
             return instance.setPrivateSaleHardCap(web3.toWei(privateSaleHardCap, "ether"));
-        }).then(function() {
+        }).then(() => {
             return OpenSocialInstance.privateSaleHardCap.call();
         }).then(function(r) {
             assert.equal(web3.fromWei(r.valueOf(), "ether"), privateSaleHardCap, privateSaleHardCap + " ETH is not set as hard cap");
         });
     });
 
-    it("The manager should be able to set the soft cap in the Crowdsale contract", function() {
+    it("The manager should be able to set the soft cap in the Crowdsale contract", () => {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
             return instance.setSoftCap(web3.toWei(softCap, "ether"));
-        }).then(function() {
+        }).then(() => {
             return OpenSocialInstance.softCap.call();
         }).then(function(r) {
             assert.equal(web3.fromWei(r.valueOf(), "ether"), softCap, softCap + " ETH is not set as soft cap");
         });
     });
 
-    it("The manager should be able to set the hard cap in the Crowdsale contract", function() {
+    it("The manager should be able to set the hard cap in the Crowdsale contract", () => {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
             return instance.setHardCap(web3.toWei(hardCap, "ether"));
-        }).then(function() {
+        }).then(() => {
             return OpenSocialInstance.hardCap.call();
         }).then(function(r) {
             assert.equal(web3.fromWei(r.valueOf(), "ether"), hardCap, hardCap + " ETH is not set as hard cap");
         });
     });
 
-    it("The manager should be able to set the token price in the Crowdsale contract", function() {
+    it("The manager should be able to set the token price in the Crowdsale contract", () => {
         let OpenSocialInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialInstance = instance;
             return OpenSocialInstance.setTokenPrice(35000, 1);
-        }).then(function() {
+        }).then(() => {
             return OpenSocialInstance.tokenPriceNum.call();
         }).then(function(r) {
             assert.equal(r, tokenPriceNum, tokenPriceNum + " is not set as token price numerator");
@@ -125,26 +149,26 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    it("The manager should be able to set the locked token address in the Crowdsale contract", function() {
+    it("The manager should be able to set the locked token address in the Crowdsale contract", () => {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
             return OpenSocialDAICOInstance.setLockedTokens(LockedTokens.address);
-        }).then(function() {
+        }).then(() => {
             return OpenSocialDAICOInstance.lockedTokens.call();
         }).then(function(lockedTokens) {
             assert.equal(lockedTokens, LockedTokens.address, "lockedTokens address is not set to " + LockedTokens.address);
         });
     });
 
-    it("A privileged contributor should be able to contribute to the teamWallet if contributor is in privilegedList", function() {
+    it("A privileged contributor should be able to contribute to the teamWallet if contributor is in privilegedList", () => {
         let OpenSocialDAICOInstance;
         let oldTeamWalletBalance;
 
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
             return OpenSocialDAICOInstance.addToLists(web3.eth.accounts[12], false, true, false, true);
-        }).then(function() {
+        }).then(() => {
             return OpenSocialDAICOInstance.teamWallet.call();
         }).then(function(teamWalletAddress) {
             return web3.eth.getBalance(teamWalletAddress);
@@ -156,7 +180,7 @@ contract('OpenSocialDAICO', function(accounts) {
                 to: OpenSocialDAICO.address,
                 value: web3.toWei(500, "ether")
             });
-        }).then(function() {
+        }).then(() => {
             return OpenSocialDAICOInstance.teamWallet.call();
         }).then(function(teamWalletAddress) {
             return web3.eth.getBalance(teamWalletAddress);
@@ -167,26 +191,16 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    // TRAVEL IN TIME INTO THE PUBLIC SALE PERIOD
-    const SECONDS_IN_A_DAY = 86400;
-    const jsonrpc = '2.0'
-    const id = 0
-
-    const send = (method, params = []) => {
-      web3.currentProvider.send({ id, jsonrpc, method, params })
-    }
-
-    const timeTravel = async seconds => {
-      await send('evm_increaseTime', [seconds])
-      await send('evm_mine')
-    }
-
-    it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", async function() {
-        await timeTravel(SECONDS_IN_A_DAY * 100)
-
+    it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", () => {
         let OpenSocialDAICOInstance;
-        return OpenSocialDAICO.deployed().then(function(instance) {
+        return OpenSocialDAICO.deployed().then(async (instance) => {
             OpenSocialDAICOInstance = instance;
+
+            let now = Math.floor(Date.now() / 1000);
+            daysUntilCrowdSale = Math.ceil( (crowdSaleStartTime - now) / SECONDS_IN_A_DAY );
+
+            await timeTravel(SECONDS_IN_A_DAY * ((daysUntilCrowdSale - daysUntilPrivateSale) + 1)) // Travel to the crowd sale start date
+
             return OpenSocialDAICOInstance.sendTransaction({
                 from: web3.eth.accounts[10],
                 to: OpenSocialDAICO.address,
@@ -199,7 +213,7 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    it("Contributions in the Reservation Fund should be transfered to the Poll Managed Fund when the contributor becomes whitelisted", function() {
+    it("Contributions in the Reservation Fund should be transfered to the Poll Managed Fund when the contributor becomes whitelisted", () => {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
@@ -215,7 +229,7 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    it("A contributor should be able to contribute to the Poll Managed Fund if contributor is already whitelisted", function() {
+    it("A contributor should be able to contribute to the Poll Managed Fund if contributor is already whitelisted", () => {
         let OpenSocialDAICOInstance;
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
@@ -235,7 +249,7 @@ contract('OpenSocialDAICO', function(accounts) {
         });
     });
 
-    it("A contributor should be able to refund its payment when soft cap is not met", function() {
+    it("A contributor should be able to refund its payment when soft cap is not met", () => {
         let PollManagedFundInstance;
         let OpenSocialDAICOInstance;
         let oldBalance = web3.eth.getBalance(web3.eth.accounts[11]);
@@ -243,7 +257,7 @@ contract('OpenSocialDAICO', function(accounts) {
         return OpenSocialDAICO.deployed().then(function(instance) {
             OpenSocialDAICOInstance = instance;
             return OpenSocialDAICOInstance.forceCrowdsaleRefund();
-        }).then(function() {
+        }).then(() => {
             return PollManagedFund.deployed();
         }).then(function(instance) {
             PollManagedFundInstance = instance;

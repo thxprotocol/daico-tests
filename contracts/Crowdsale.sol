@@ -29,11 +29,11 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
     uint256 public constant ETHER_MIN_CONTRIB_USA = 0.2 ether;
     uint256 public constant ETHER_MAX_CONTRIB_USA = 20 ether;
 
-    uint256 public constant SALE_START_TIME = 1526459784 + 100 days; // @TODO Remove when PRIVATE_SALE_START_TIME is set
-    uint256 public constant SALE_END_TIME = 1529138184 + 100 days; // @TODO Remove when PRIVATE_SALE_END_TIME is set
+    uint256 public constant SALE_START_TIME = 1535925600; // Mon, 03 Sep 2018 00:00:00 +0200
+    uint256 public constant SALE_END_TIME = 1538344800; // Mon, 01 Oct 2018 00:00:00 +0200
 
-    uint256 public constant PRIVATE_SALE_START_TIME = 1526459784; // Wed, 16 May 2018 10:36:24 +0200
-    uint256 public constant PRIVATE_SALE_END_TIME = 1529138184; // Sat, 16 Jun 2018 10:36:24 +0200
+    uint256 public constant PRIVATE_SALE_START_TIME = 1532296800; // Mon, 23 Jul 2018 00:00:00 +0200
+    uint256 public constant PRIVATE_SALE_END_TIME = 1533506400; // Mon, 06 Aug 2018 00:00:00 +0200
 
     uint256 public constant BONUS_WINDOW_1_END_TIME = SALE_START_TIME + 2 days;
     uint256 public constant BONUS_WINDOW_2_END_TIME = SALE_START_TIME + 7 days;
@@ -79,7 +79,7 @@ contract OpenSocialDAICO is Ownable, SafeMath, Pausable, ISimpleCrowdsale {
     uint256 public totalBNBContributed = 0;
     bool public bnbWithdrawEnabled = false;
 
-    uint256 public privateSaleHardCap = 0; // Private Sale hard cap will be set right before Token Sale
+    uint256 public privateSaleHardCap = 0; // Private Sale hard cap will be set right before Private Token Sale
 
     uint256 public hardCap = 0; // World hard cap will be set right before Token Sale
     uint256 public softCap = 0; // World soft cap will be set right before Token Sale
