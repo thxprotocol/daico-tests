@@ -156,6 +156,9 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).additionalBonusOwnerState.call(web3.
 OpenSocialDAICO.at(OpenSocialDAICO.address).totalEtherContributed.call();
 // Check token amount of user
 OpenSocialCoin.at(OpenSocialCoin.address).totalSupply.call()
+// Check the amount a user has contributed
+OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.accounts[10])
+
 ```
 
 ### Finalizing the Crowdsale
@@ -163,20 +166,32 @@ OpenSocialCoin.at(OpenSocialCoin.address).totalSupply.call()
 ```javascript
 // Check the current state of the PollManagedFund
 PollManagedFund.at(PollManagedFund.address).state.call();
-// Check if coin transfers are allowed
-OpenSocialCoin.at(OpenSocialCoin.address).allowTransfers.call()
-// Check if issuance is finished
-OpenSocialCoin.at(OpenSocialCoin.address).issuanceFinished.call()
-// Allow transfers
-OpenSocialCoin.at(OpenSocialCoin.address).enableTransfers()
-// Transfer 100 OSC from accounts 10 to accounts 11
-OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 100)
 // Finalize the crowdsale when sale is ended or hardcap is met
 OpenSocialDAICO.at(OpenSocialDAICO.address).finalizeCrowdsale();
-// Check the amount a user has contributed
-OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.accounts[10])
+// Check if issuance is finished
+OpenSocialCoin.at(OpenSocialCoin.address).issuanceFinished.call()
+// Check if coin transfers are allowed
+OpenSocialCoin.at(OpenSocialCoin.address).allowTransfers.call()
+// Allow transfers
+OpenSocialCoin.at(OpenSocialCoin.address).enableTransfers()
+// Check if we are in limited transfer period
+OpenSocialCoin.at(OpenSocialCoin.address).isLimitEnabled.call();
+// Approve tokens to be transferred during limited period
+OpenSocialCoin.at(OpenSocialCoin.address).addLimitedWalletAddress(web3.eth.accounts[10]);
+OpenSocialCoin.at(OpenSocialCoin.address).increaseApproval(web3.eth.accounts[10], 1000);
+// Disable limit
+OpenSocialCoin.at(OpenSocialCoin.address).disableLimit()
+// Display the current token balances of accounts
+OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[10]);
+OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[11]);
+// Transfer 100 OSC from accounts 10 to accounts 11
+OpenSocialCoin.at(OpenSocialCoin.address).approve(web3.eth.accounts[10], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] });
+OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] })
+OpenSocialCoin.at(OpenSocialCoin.address).allowed(web3.eth.accounts[10], web3.eth.accounts[11]);
 
 ```
+
+
 
 ### Refunding contributors
 
@@ -185,15 +200,30 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.a
 OpenSocialDAICO.at(OpenSocialDAICO.address).forceCrowdsaleRefund()
 // Check the current state of the PollManagedFund
 PollManagedFund.at(PollManagedFund.address).state.call();
-// Call refund method from a specific accounts when contract is in Refund state
+// Call refund method from a specific account when contract is in Refund state
 PollManagedFund.at(PollManagedFund.address).refundCrowdsaleContributor({ from: web3.eth.accounts[10] })
 ```
-...
 
 ### Voting
 
-...
+To simulate a scenario where we can vote for tap increases refunding we need to finalize the crowdsale to get the PollManagedFund into TeamWithDraw mode. I added some scripts to speed up this process.
 
+```bash
+truffle migrate --network ganache
+# Configure the settings of the contracts after migrating
+truffle exec scripts/configureContracts.js --network ganache;
+# Set the FUTURE_TIMESTAMP constant first (e.g. the SALE_START_TIME to travel to the start of sale)
+truffle exec scripts/changeTime.js --network ganache;
+# Configure this so enough contributions are made to reach the softcap or hardcap
+truffle exec scripts/contribute.js --network ganache;
+```
+
+```javascript
+OpenSocialDAICO.at(OpenSocialDAICO.address).finalizeCrowdsale();
+// Should return 2 (withdraw mode)
+PollManagedFund.at(PollManagedFund.address).state.call();
+// Create a refundPoll but make sure you are in the correct time window (see refundPollDates PollManagedFund)
+```
 
 ## Automated Testing
 

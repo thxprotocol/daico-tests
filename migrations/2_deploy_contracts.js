@@ -6,7 +6,7 @@ const LockedTokens = artifacts.require("LockedTokens");
 
 module.exports = function(deployer, network, accounts) {
     deployer.deploy(OpenSocialCoin,
-        _listener = accounts[0],
+        _listener = '',
         _owners = [],
         manager = accounts[0]
     )

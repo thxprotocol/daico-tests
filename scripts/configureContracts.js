@@ -8,7 +8,7 @@ const LockedTokens = artifacts.require("LockedTokens");
 const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
-module.exports = async function(callback) {
+module.exports = async (callback) => {
   const privateSaleHardCap = 655; // 655 in ETH
   const softCap = 1500; // 5714 in ETH
   const hardCap = 2500; // 22857 in ETH
