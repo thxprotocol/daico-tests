@@ -5,7 +5,7 @@ const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
 const shared = require('./configuration.js');
-const timeTravel = require("../scripts/timeTravel.js");
+const timeTravel = require("../scripts/time_travel.js");
 
 contract('OpenSocialDAICO', async (accounts) => {
     const SECONDS_IN_A_DAY = 86400;
