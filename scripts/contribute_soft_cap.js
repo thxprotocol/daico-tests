@@ -2,8 +2,6 @@ const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
 module.exports = async (callback) => {
-  await OpenSocialDAICO.deployed();
-
   for (let i = 10; i < 25; i++) {
     await OpenSocialDAICO.at(OpenSocialDAICO.address).addToWhiteList(web3.eth.accounts[i]);
 

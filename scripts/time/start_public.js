@@ -1,7 +1,7 @@
 const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
 
 module.exports = async (callback) => {
-  const SALE_START_TIME = await OpenSocialDAICO.at(OpenSocialDAICO.address).SALE_START_TIME.call()
+  const MAX_CONTRIB_CHECK_END_TIME = await OpenSocialDAICO.at(OpenSocialDAICO.address).MAX_CONTRIB_CHECK_END_TIME.call()
   const jsonrpc = '2.0'
   const id = 0
 
@@ -16,7 +16,7 @@ module.exports = async (callback) => {
     await send('evm_mine')
   }
 
-  await timeTravel(SALE_START_TIME - blocktime)
+  await timeTravel(MAX_CONTRIB_CHECK_END_TIME - blocktime)
 
   blocktime = await web3.eth.getBlock('latest').timestamp
 

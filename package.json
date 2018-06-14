@@ -1,22 +1,26 @@
 {
   "name": "daico",
   "version": "1.0.0",
-  "description": "This repository holds the deployment scripts and experimental code for the  DAICO Smart Contracts needed for the OST Crowdsale.",
+  "description": "Deployment, configuration, helper and automated test scripts for Open Social DAICO Smart Contracts.",
   "main": "truffle.js",
   "dependencies": {},
   "devDependencies": {
-    "truffle": "^4.1.8"
+    "truffle": "^4.1.8",
+    "ganache-cli": "^1.0.0"
   },
   "scripts": {
-    "test": ""
+    "test:configuration": "truffle test test/configuration.js --network ganache",
+    "test:contributing": "truffle test test/contributing.js --network ganache",
+    "test:refunding": "truffle test test/refunding.js --network ganache",
+    "test:voting": "truffle test test/voting.js --network ganache"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/peterpolman/daico-smart-contracts.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Peter Polman",
+  "license": "",
   "bugs": {
     "url": "https://github.com/peterpolman/daico-smart-contracts/issues"
   },

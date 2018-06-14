@@ -1,5 +1,4 @@
 .idea
 datadir
 build
-solc_build
 node_modules
