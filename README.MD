@@ -21,6 +21,7 @@ git clone --recursive git@github.com:peterpolman/daico-smart-contracts.git daico
 We use the Truffle toolbox to interact with the RPC. It gives us migration, debug and console interfaces. For development purposes we use the Ganache CLI. With brew we need to install the Ethereum packages so we can use the solidity compiler.
 
 ```bash
+# Install these packages globally
 npm install -g truffle
 npm install -g ganache-cli
 ```
@@ -295,8 +296,8 @@ For the key features in the DAICO contracts automated tests are written. You can
 
 ```bash
 # Run a specific test, remember to restart your RPC between tests.
-truffle test ./scripts/configuration.js --network ganache
-truffle test ./scripts/contributing.js --network ganache
-truffle test ./scripts/voting.js --network ganache
-truffle test ./scripts/refunding.js --network ganache
+truffle test ./test/configuration.js --network ganache
+truffle test ./test/contributing.js --network ganache
+truffle test ./test/voting.js --network ganache
+truffle test ./test/refunding.js --network ganache
 ```
