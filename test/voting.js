@@ -4,28 +4,14 @@ const LockedTokens = artifacts.require("LockedTokens");
 const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
-const shared = require('./configuration.js');
+const sharedConfig = require('./_shared_config.js');
 const timeTravel = require("../scripts/time_travel.js");
 
 contract('OpenSocialDAICO', async (accounts) => {
-    const SECONDS_IN_A_DAY = 86400;
     const CREATE_TAPPOLL_DATE = 1549784558;
 
-    let crowdSaleStartTime;
-    let crowdSaleEndTime;
-
-    let daysUntilCrowdSale;
-    let daysUntilCrowdSaleEnd;
-    let tapPollAddress;
-
-    let OpenSocialDAICOInstance;
-    let PollManagedFundInstance;
-    let OpenSocialCoinInstance;
-    let ReservationFundInstance;
-    let LockedTokensInstance;
-
     it("All instances should be available", async() => {
-      context = await shared.run(accounts);
+      context = await sharedConfig.run(accounts);
 
       ({ OpenSocialDAICOInstance, ReservationFundInstance, OpenSocialCoinInstance, PollManagedFundInstance, LockedTokensInstance } = context);
 
@@ -36,13 +22,11 @@ contract('OpenSocialDAICO', async (accounts) => {
       assert(LockedTokensInstance !== undefined, 'has LockedTokensInstance instance');
     });
 
-    it("Contributors should contribute till hard cap", async() => {
-      crowdSaleStartTime = (await OpenSocialDAICOInstance.SALE_START_TIME.call()).valueOf();;
-
+    it("Contributors should contribute as much as the hard cap", async() => {
+      let crowdSaleStartTime = (await OpenSocialDAICOInstance.SALE_START_TIME.call()).valueOf();;
       let blocktime = web3.eth.getBlock('latest').timestamp;
-      daysUntilCrowdSale = Math.ceil( (crowdSaleStartTime - blocktime) / SECONDS_IN_A_DAY );
 
-      await timeTravel(SECONDS_IN_A_DAY * (daysUntilCrowdSale + 1))
+      await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
 
       for (let i = 10; i < 35; i++) {
         await OpenSocialDAICOInstance.addToLists(web3.eth.accounts[i], true, false, false, false);
@@ -53,7 +37,7 @@ contract('OpenSocialDAICO', async (accounts) => {
               to: OpenSocialDAICO.address,
               value: web3.toWei(20, "ether")
           });
-          console.log('... #' + i + ' contributed 20 ETH ' + (j + 1) + 'x');
+          console.log('... #' + i + ' contributed 20 ETH [' + (j + 1) + 'x]');
         }
       }
 
@@ -63,11 +47,11 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("The manager should be able to finalize the crowdsale and set the state to TeamWithdraw mode", async() => {
-      crowdSaleEndTime = (await OpenSocialDAICOInstance.SALE_END_TIME.call()).valueOf();;
+      let crowdSaleEndTime = await OpenSocialDAICOInstance.SALE_END_TIME.call();
       let blocktime = web3.eth.getBlock('latest').timestamp;
-      daysUntilCrowdSaleEnd = Math.ceil( (crowdSaleEndTime - blocktime) / SECONDS_IN_A_DAY );
 
-      await timeTravel(SECONDS_IN_A_DAY * (daysUntilCrowdSaleEnd + 1))
+      await timeTravel(crowdSaleEndTime - blocktime);
+
       await OpenSocialDAICOInstance.finalizeCrowdsale();
 
       let state = (await PollManagedFundInstance.state.call()).valueOf();
@@ -76,19 +60,19 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("The team should be able to create a tap poll that increases the tap with 10%", async() => {
-      // Travel to a date in the future that is the 10th day of the month
       let blocktime = web3.eth.getBlock('latest').timestamp;
-      daysUntilTapPollCreate = Math.ceil( (CREATE_TAPPOLL_DATE - blocktime) / SECONDS_IN_A_DAY );
 
-      await timeTravel(SECONDS_IN_A_DAY * (daysUntilTapPollCreate))
+      await timeTravel(CREATE_TAPPOLL_DATE - blocktime);
+
       await PollManagedFundInstance.createTapPoll(10);
 
-      tapPollAddress = (await PollManagedFundInstance.tapPoll.call())
+      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
 
       assert(tapPollAddress != "0x0000000000000000000000000000000000000000", "Tap poll is created");
     });
 
     it("A contributor should be able to vote YES on the tap poll", async () => {
+      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
         from: web3.eth.accounts[10],
         to: tapPollAddress,
@@ -100,6 +84,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("A contributor should be able to vote NO on the tap poll", async () => {
+      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
         from: web3.eth.accounts[11],
         to: tapPollAddress,
@@ -111,6 +96,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("A contributor should be able to revoke his tap poll vote", async () => {
+      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
         from: web3.eth.accounts[11],
         to: tapPollAddress,
