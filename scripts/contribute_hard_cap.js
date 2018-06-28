@@ -12,7 +12,7 @@ module.exports = async (callback) => {
           value: web3.toWei(20, "ether")
       });
 
-      console.log('... #' + i + ' contributed 20 ETH ' + (j + 1) + 'x');
+      console.log('... #' + i + ' contributed 20 ETH [' + (j + 1) + 'x]');
     }
   }
 }

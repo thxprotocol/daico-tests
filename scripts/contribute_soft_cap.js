@@ -6,13 +6,13 @@ module.exports = async (callback) => {
     await OpenSocialDAICO.at(OpenSocialDAICO.address).addToWhiteList(web3.eth.accounts[i]);
 
     for (let j = 0; j < 5; j++) {
-      await PollManagedFund.at(PollManagedFund.address).sendTransaction({
+      await OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({
           from: web3.eth.accounts[i],
           to: OpenSocialDAICO.address,
           value: web3.toWei(20, "ether")
       });
 
-      console.log('... #' + i + ' contributed 20 ETH ' + (j + 1) + 'x');
+      console.log('... #' + i + ' contributed 20 ETH [' + (j + 1) + 'x]');
     }
   }
 }

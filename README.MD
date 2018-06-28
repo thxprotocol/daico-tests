@@ -18,12 +18,11 @@ git clone --recursive git@github.com:peterpolman/daico-smart-contracts.git daico
 
 ## Installation
 
-We use the Truffle toolbox to interact with the RPC. It gives us migration, debug and console interfaces. For development purposes we use the Ganache CLI. With brew we need to install the ethereum packages so we can use the solidity compiler.
+We use the Truffle toolbox to interact with the RPC. It gives us migration, debug and console interfaces. For development purposes we use the Ganache CLI. With brew we need to install the Ethereum packages so we can use the solidity compiler.
 
 ```bash
-yarn install -g truffle
-yarn install -g ganache-cli
-brew install ethereum/ethereum
+npm install -g truffle
+npm install -g ganache-cli
 ```
 
 ## Start RPC
@@ -36,24 +35,22 @@ ganache-cli --accounts=35 --defaultBalanceEther=1000 --gasPrice=10225000000 --ga
 ```
 
 ## Accounts and wallets
-
-* **accounts[0]:** Coinbase, contract owner and has manager roles
-* **accounts[1]:** Team Wallet
-* **accounts[2]:** ReferralToken Wallet
-* **accounts[3]:** FoundationToken Wallet
-* **accounts[4]:** CompanyToken Wallet
-* **accounts[5]:** ReserveToken Wallet
-* **accounts[6]:** BountyToken Wallet
-* **accounts[7]:** AdvisorToken Wallet
-* **accounts[8]:** BnbToken Wallet
-* **accounts[10]:** Test accounts #0
-* **accounts[11]:** Test accounts #1
-* **accounts[12]:** Test accounts #2
-* **accounts[13]:** Test accounts #3
-* **accounts[14]:** Test accounts #4
-* **accounts[15]:** Test accounts #5
-* ...
-* **accounts[34]:** Test accounts #34
+| Account # | Description |
+|-|-|
+| 0 | Coinbase, contract owner and has manager roles |
+| 1 | Team Wallet |
+| 2 | Crowdsale Token Wallet |
+| 3 | Foundation Token Wallet |
+| 4 | Company Token Wallet |
+| 5 | Reserve Token Wallet |
+| 6 | Bounty Token Wallet |
+| 7 | Advisor Token Wallet |
+| 8 | - |
+| 9 | - |
+| 10 | Test account #0 |
+| 11 | Test account #1 |
+| .. | .. |
+| 34 | Test account #34 |
 
 ## Deployment
 
@@ -68,24 +65,25 @@ Some statics need to be set in the contracts. Follow these steps:
 The migration script will deploy the contracts on the Ganache blockchain. Make sure it is started and has at least 9 accounts preconfigured.
 These contracts will be deployed and accessible:
 
-### Crowdsale.sol:
+* **Crowdsale.sol:**
 The OpenSocialDAICO contract that distributes payments to the correct funds and allows contributors to refund.
 
-### PollManagedFund.sol:
+* **PollManagedFund.sol:**
 The fund holding the teams ETH, releasing some each month depending on the tap configuration
 
-### ReservationFund.sol
+* **ReservationFund.sol:**
 The fund holding ETH send to the Crowdsale contract by contributors prior to passing their KYC
 
-### OpenSocialCoin.sol
+* **OpenSocialCoin.sol:**
 The Token contract listing all contributors that are allowed to have tokens.
 
-### LockedTokens.sol
+* **LockedTokens.sol:**
 Contract responsible for locking tokens for a specific amount of time
 
 ```bash
 # Remove previous builds and deploy the crowdsale with the deployment script provided in /migrations/2_deploy_contracts.js
-rm -rf build; truffle migrate --network ganache;
+rm -rf build;
+truffle migrate --network ganache;
 ```
 
 ## Configuration
@@ -162,11 +160,12 @@ Call for stats on total token supply, total ether contributed and amount ether c
 ```javascript
 // Check the totalEtherContributed during the crowdsale
 OpenSocialDAICO.at(OpenSocialDAICO.address).totalEtherContributed.call();
-// Check token amount of user
+// Check the total generated amount of tokens
 OpenSocialCoin.at(OpenSocialCoin.address).totalSupply.call()
 // Check the amount a user has contributed
 OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.accounts[10])
-
+// Contribute 20 ether from account 11
+OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({ from: web3.eth.accounts[11], to: OpenSocialDAICO.address, value: web3.toWei(20, "ether") });
 ```
 
 ### Finalizing the Crowdsale
@@ -197,7 +196,7 @@ OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[11]);
 // Transfer 1000 OSC from accounts 10 to accounts 11
 OpenSocialCoin.at(OpenSocialCoin.address).approve(web3.eth.accounts[10], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] });
 OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] })
-// Check how mucht accounts 10 allowed account 11
+// Check how much accounts 10 allowed account 11
 OpenSocialCoin.at(OpenSocialCoin.address).allowed(web3.eth.accounts[10], web3.eth.accounts[11]);
 
 ```
@@ -296,6 +295,8 @@ For the key features in the DAICO contracts automated tests are written. You can
 
 ```bash
 # Run a specific test, remember to restart your RPC between tests.
+truffle test ./scripts/configuration.js --network ganache
 truffle test ./scripts/contributing.js --network ganache
 truffle test ./scripts/voting.js --network ganache
+truffle test ./scripts/refunding.js --network ganache
 ```

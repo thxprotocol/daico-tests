@@ -8,7 +8,7 @@ module.exports = async (callback) => {
   const privateSaleHardCap = 655;
   const softCap = 1500;
   const hardCap = 2500;
-  const tokenPriceNum = 1;
+  const tokenPriceNum = 10000;
   const tokenPriceDenom = 1;
 
   console.log("Configure OpenSocialCoin at " + OpenSocialCoin.address);
