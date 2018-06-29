@@ -23,7 +23,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("Contributors should contribute as much as the hard cap", async() => {
-      let crowdSaleStartTime = (await OpenSocialDAICOInstance.SALE_START_TIME.call()).valueOf();;
+      let crowdSaleStartTime = await OpenSocialDAICOInstance.SALE_START_TIME.call();
       let blocktime = web3.eth.getBlock('latest').timestamp;
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
