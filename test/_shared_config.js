@@ -92,12 +92,16 @@ const run = exports.run = async (accounts) => {
   });
 
   it("The manager should be able to set the token price in the Crowdsale contract", async () => {
-      await OpenSocialDAICOInstance.setTokenPrice(config.tokenPriceNum, config.tokenPriceDenom);
+      await OpenSocialDAICOInstance.setTokenPrice(config.tokenPriceNum, config.tokenPriceDenom, config.bnbTokenPriceNum, config.bnbTokenPriceDenom);
       let tokenPriceNum = await OpenSocialDAICOInstance.tokenPriceNum.call();
       let tokenPriceDenom = await OpenSocialDAICOInstance.tokenPriceDenom.call();
+      let bnbTokenPriceNum = await OpenSocialDAICOInstance.bnbTokenPriceNum.call();
+      let bnbTokenPriceDenom = await OpenSocialDAICOInstance.bnbTokenPriceDenom.call();
 
       assert.equal(tokenPriceNum, config.tokenPriceNum, config.tokenPriceNum + " is not set as token price numerator");
       assert.equal(tokenPriceDenom, config.tokenPriceDenom, config.tokenPriceDenom + " is not set as token price denominator");
+      assert.equal(bnbTokenPriceNum, config.bnbTokenPriceNum, config.bnbTokenPriceNum + " is not set as token price numerator");
+      assert.equal(bnbTokenPriceDenom, config.bnbTokenPriceDenom, config.bnbTokenPriceDenom + " is not set as token price denominator");
   });
 
   it("The manager should be able to set the locked token address in the Crowdsale contract", async () => {

@@ -67,7 +67,7 @@ contract('OpenSocialDAICO', async (accounts) => {
 
     it("Contributor should be able to transfer his tokens to another wallet.", async() => {
       var amountInWei = await OpenSocialCoinInstance.balanceOf(accounts[10]).valueOf();
-      var amount= web3.fromWei(amountInWei, "ether").valueOf();
+      var amount = web3.fromWei(amountInWei, "ether").valueOf();
 
       // Allow transfers
       await OpenSocialCoinInstance.enableTransfers();

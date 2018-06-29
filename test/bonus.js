@@ -50,7 +50,7 @@ contract('OpenSocialDAICO', async (accounts) => {
       let bonusWindow2EndTime = await OpenSocialDAICOInstance.BONUS_WINDOW_2_END_TIME.call().valueOf();
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(parseInt(bonusWindow1EndTime) - blocktime);
+      await timeTravel((parseInt(bonusWindow1EndTime) + 86400) - blocktime); // + 86400 seconds == 1 day
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
@@ -68,11 +68,11 @@ contract('OpenSocialDAICO', async (accounts) => {
 
     it("Contributor should be able to make payment in bonus window 3", async() => {
       // Contribute in bonus window 3
-      let bonusWindow2EndTime = await OpenSocialDAICOInstance.BONUS_WINDOW_2_END_TIME.call();
-      let bonusWindow3EndTime = await OpenSocialDAICOInstance.BONUS_WINDOW_3_END_TIME.call();
+      let bonusWindow2EndTime = await OpenSocialDAICOInstance.BONUS_WINDOW_2_END_TIME.call().valueOf();
+      let bonusWindow3EndTime = await OpenSocialDAICOInstance.BONUS_WINDOW_3_END_TIME.call().valueOf();
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(parseInt(bonusWindow2EndTime) - blocktime);
+      await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - blocktime); // + 86400 seconds == 1 day
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
@@ -93,11 +93,11 @@ contract('OpenSocialDAICO', async (accounts) => {
       let bonusWindow3EndTime = await OpenSocialDAICOInstance.BONUS_WINDOW_3_END_TIME.call().valueOf();
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(parseInt(bonusWindow3EndTime) - blocktime);
+      await timeTravel((parseInt(bonusWindow3EndTime) + 86400) - blocktime);
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[13]);
+      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[13]); // + 86400 seconds == 1 day
       let tx = await OpenSocialDAICOInstance.sendTransaction({
           from: web3.eth.accounts[13],
           to: OpenSocialDAICO.address,

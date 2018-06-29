@@ -40,8 +40,8 @@ module.exports = async (callback) => {
   console.log("... setting hard cap to " + config.hardCap + " ETH.");
   OpenSocialDAICO.at(OpenSocialDAICO.address).setHardCap(web3.toWei(config.hardCap, "ether"));
 
-  console.log("... setting tokenPrice to " + config.tokenPriceNum + " OSC equals " + config.tokenPriceDenom + " ETH.");
-  OpenSocialDAICO.at(OpenSocialDAICO.address).setTokenPrice(config.tokenPriceNum, config.tokenPriceDenom);
+  console.log("... setting tokenPrice to " + config.tokenPriceNum + " OSC equals " + config.tokenPriceDenom + " ETH and " + config.bnbTokenPriceNum + " OSC equals " + config.bnbTokenPriceDenom + " BNB.");
+  OpenSocialDAICO.at(OpenSocialDAICO.address).setTokenPrice(config.tokenPriceNum, config.tokenPriceDenom, config.bnbTokenPriceNum, config.bnbTokenPriceDenom);
 
   console.log("... setting lockedTokensAddress to " + LockedTokens.address);
   OpenSocialDAICO.at(OpenSocialDAICO.address).setLockedTokens(LockedTokens.address);
