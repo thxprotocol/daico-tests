@@ -29,11 +29,11 @@ contract('OpenSocialDAICO', async (accounts) => {
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
 
       for (let i = 10; i < 35; i++) {
-        await OpenSocialDAICOInstance.addToLists(web3.eth.accounts[i], true, false, false, false);
+        await OpenSocialDAICOInstance.addToLists(accounts[i], true, false, false, false);
 
         for (let j = 0; j < 5; j++) {
           await OpenSocialDAICOInstance.sendTransaction({
-              from: web3.eth.accounts[i],
+              from: accounts[i],
               to: OpenSocialDAICO.address,
               value: web3.toWei(20, "ether")
           });
@@ -74,7 +74,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     it("A contributor should be able to vote YES on the tap poll", async () => {
       let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
-        from: web3.eth.accounts[10],
+        from: accounts[10],
         to: tapPollAddress,
         data: "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
         gas: 200000
@@ -86,7 +86,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     it("A contributor should be able to vote NO on the tap poll", async () => {
       let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
-        from: web3.eth.accounts[11],
+        from: accounts[11],
         to: tapPollAddress,
         data: "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
         gas: 200000
@@ -98,7 +98,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     it("A contributor should be able to revoke his tap poll vote", async () => {
       let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
-        from: web3.eth.accounts[11],
+        from: accounts[11],
         to: tapPollAddress,
         data: "0x43c14b22",
         gas: 200000

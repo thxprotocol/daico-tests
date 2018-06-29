@@ -29,23 +29,23 @@ contract('OpenSocialDAICO', async (accounts) => {
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - web3.eth.getBlock('latest').timestamp); // + 86400 seconds == 1 day
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[10]);
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[10]);
       var tx1 = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[10],
+          from: accounts[10],
           to: OpenSocialDAICO.address,
           value: web3.toWei(1, "ether")
       });
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[11]);
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[11]);
       var tx2 = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[11],
+          from: accounts[11],
           to: OpenSocialDAICO.address,
           value: web3.toWei(750, "ether")
       });
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[12]);
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[12]);
       var tx3 = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[12],
+          from: accounts[12],
           to: OpenSocialDAICO.address,
           value: web3.toWei(750, "ether")
       });
@@ -73,8 +73,8 @@ contract('OpenSocialDAICO', async (accounts) => {
       await OpenSocialCoinInstance.enableTransfers();
 
       // Transfer tokens
-      await OpenSocialCoinInstance.approve(web3.eth.accounts[10], amountInWei, { from: web3.eth.accounts[10] });
-      await OpenSocialCoinInstance.transferFrom(web3.eth.accounts[10], web3.eth.accounts[15], amountInWei, { from: web3.eth.accounts[10] });
+      await OpenSocialCoinInstance.approve(accounts[10], amountInWei, { from: accounts[10] });
+      await OpenSocialCoinInstance.transferFrom(accounts[10], accounts[15], amountInWei, { from: accounts[10] });
 
       var balanceSender = web3.fromWei(await OpenSocialCoinInstance.balanceOf(accounts[10]), "ether").valueOf();
       var balanceReceiver = web3.fromWei(await OpenSocialCoinInstance.balanceOf(accounts[15]), "ether").valueOf();

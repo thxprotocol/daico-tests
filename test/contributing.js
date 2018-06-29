@@ -27,14 +27,14 @@ contract('OpenSocialDAICO', async (accounts) => {
 
       await timeTravel(privateSaleStartTime - blocktime);
 
-      await OpenSocialDAICOInstance.addToLists(web3.eth.accounts[12], false, true, false, true);
+      await OpenSocialDAICOInstance.addToLists(accounts[12], false, true, false, true);
 
       let teamWalletAddress = await OpenSocialDAICOInstance.teamWallet.call();
       var balance = await web3.eth.getBalance(teamWalletAddress);
       let teamWalletBalance = web3.fromWei(balance.valueOf(), "ether");
 
       await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[12],
+          from: accounts[12],
           to: OpenSocialDAICO.address,
           value: web3.toWei(500, "ether")
       });
@@ -54,7 +54,7 @@ contract('OpenSocialDAICO', async (accounts) => {
         await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
 
         await OpenSocialDAICOInstance.sendTransaction({
-            from: web3.eth.accounts[10],
+            from: accounts[10],
             to: OpenSocialDAICO.address,
             value: web3.toWei(250, "ether")
         });
@@ -66,7 +66,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("Contributions in the Reservation Fund should be transfered to the Poll Managed Fund when the contributor becomes whitelisted", async () => {
-        await OpenSocialDAICOInstance.addToLists(web3.eth.accounts[10], true, false, false, false);
+        await OpenSocialDAICOInstance.addToLists(accounts[10], true, false, false, false);
 
         var balance = await web3.eth.getBalance(PollManagedFund.address);
         let PollManagedFundBalance = balance.valueOf();
@@ -80,9 +80,9 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("A contributor should be able to contribute to the Poll Managed Fund if contributor is already whitelisted", async () => {
-        await OpenSocialDAICOInstance.addToLists(web3.eth.accounts[11], true, false, false, false);
+        await OpenSocialDAICOInstance.addToLists(accounts[11], true, false, false, false);
         await OpenSocialDAICOInstance.sendTransaction({
-            from: web3.eth.accounts[11],
+            from: accounts[11],
             to: OpenSocialDAICO.address,
             value: web3.toWei(500, "ether")
         });
@@ -96,7 +96,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("A contributor should be able to refund its payment when soft cap is not met", async () => {
-        let oldBalance = await web3.eth.getBalance(web3.eth.accounts[11]);
+        let oldBalance = await web3.eth.getBalance(accounts[11]);
 
         await OpenSocialDAICOInstance.forceCrowdsaleRefund();
 
@@ -104,9 +104,9 @@ contract('OpenSocialDAICO', async (accounts) => {
 
         assert.equal(state, 1, "The current state is " + state + " and not 1.");
 
-        await PollManagedFundInstance.refundCrowdsaleContributor({ from: web3.eth.accounts[11] });
+        await PollManagedFundInstance.refundCrowdsaleContributor({ from: accounts[11] });
 
-        var balance = await web3.eth.getBalance(web3.eth.accounts[11]);
+        var balance = await web3.eth.getBalance(accounts[11]);
         let newBalance = parseInt(web3.fromWei(balance, "ether").valueOf());
         let calculatedNewBalance = parseInt(web3.fromWei(oldBalance, "ether").valueOf()) + 500;
 

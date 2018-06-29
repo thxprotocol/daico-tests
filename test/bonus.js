@@ -30,9 +30,9 @@ contract('OpenSocialDAICO', async (accounts) => {
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // + 86400 seconds == 1 day
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[10]);
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[10]);
       let tx = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[10],
+          from: accounts[10],
           to: OpenSocialDAICO.address,
           value: web3.toWei(1, "ether")
       });
@@ -54,9 +54,9 @@ contract('OpenSocialDAICO', async (accounts) => {
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[11]);
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[11]);
       let tx = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[11],
+          from: accounts[11],
           to: OpenSocialDAICO.address,
           value: web3.toWei(1, "ether")
       });
@@ -76,9 +76,9 @@ contract('OpenSocialDAICO', async (accounts) => {
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[12]);
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[12]);
       let tx = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[12],
+          from: accounts[12],
           to: OpenSocialDAICO.address,
           value: web3.toWei(1, "ether")
       });
@@ -97,9 +97,9 @@ contract('OpenSocialDAICO', async (accounts) => {
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await OpenSocialDAICOInstance.addToWhiteList(web3.eth.accounts[13]); // + 86400 seconds == 1 day
+      await OpenSocialDAICOInstance.addToWhiteList(accounts[13]); // + 86400 seconds == 1 day
       let tx = await OpenSocialDAICOInstance.sendTransaction({
-          from: web3.eth.accounts[13],
+          from: accounts[13],
           to: OpenSocialDAICO.address,
           value: web3.toWei(1, "ether")
       });
