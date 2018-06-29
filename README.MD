@@ -4,7 +4,7 @@ This repository holds the Smart Contracts, deployment/migration, test and config
 Clone the repository recursively so the forked contracts repo will also be cloned.
 
 ```bash
-git clone --recursive git@github.com:peterpolman/daico-smart-contracts.git daico
+git clone --recursive git@github.com:goalgorilla/daico-smart-contracts.git daico
 ```
 
 ## Index
