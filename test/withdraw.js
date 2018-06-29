@@ -27,7 +27,7 @@ contract('OpenSocialDAICO', async (accounts) => {
       let crowdSaleEndTime = await OpenSocialDAICOInstance.SALE_END_TIME.call();
       var blocktime = await web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
+      await timeTravel((parseInt(crowdSaleStartTime) + 86401) - blocktime); // 86400 seconds == 1 day
 
       await OpenSocialDAICOInstance.addToWhiteList(accounts[10]);
       await OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({
@@ -71,20 +71,20 @@ contract('OpenSocialDAICO', async (accounts) => {
     it("Team wallet should be able to withdraw 250 ETH 30 days after the end of the crowdsale.", async() => {
       let crowdSaleEndTime = await OpenSocialDAICOInstance.SALE_END_TIME.call();
       var blocktime = web3.eth.getBlock('latest').timestamp;
-
-      var currentTapAmount = web3.fromWei(await PollManagedFundInstance.getCurrentTapAmount(), "ether").valueOf();
+      let teamWallet = await PollManagedFundInstance.teamWallet.call();
 
       await timeTravel((parseInt(crowdSaleEndTime) + (30 * 86400)) - blocktime); // 30 days
 
-      var currentTapAmount = web3.fromWei(await PollManagedFundInstance.getCurrentTapAmount(), "ether").valueOf();
+      let amount = web3.fromWei(web3.eth.getBalance(teamWallet), "ether").valueOf();
 
       await PollManagedFundInstance.withdraw();
 
-      let teamWallet = await PollManagedFundInstance.teamWallet.call();
-      let amount = web3.fromWei(web3.eth.getBalance(teamWallet), "ether").valueOf();
+      let newAmount = web3.fromWei(web3.eth.getBalance(teamWallet), "ether").valueOf();
+      var currentTapAmount = web3.fromWei(await PollManagedFundInstance.getCurrentTapAmount(), "ether").valueOf();
 
-      assert(amount > 1395, "Ether not withdrawn from PollManagedFund.") // Just not exactly 1400 because of the time between withdrawel and tapamount calculation
-
+      assert(currentTapAmount < 1, "Ether not withdrawn from PollManagedFund.")
+      // Just not exactly 1400 because of the time between withdrawel and tapamount calculation
+      assert(newAmount > 1395, "Ether not transfered to Team Wallet.");
     });
 
 });
