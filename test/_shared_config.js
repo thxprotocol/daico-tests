@@ -34,7 +34,7 @@ const run = exports.run = async (accounts) => {
   });
 
   it("The manager should be able to set the owners of the token contract", async () => {
-      await OpenSocialCoinInstance.setOwners([OpenSocialDAICO.address, PollManagedFund.address]);
+      await OpenSocialCoinInstance.setOwners([OpenSocialDAICO.address, PollManagedFund.address, accounts[0]]);
       let firstOwner = await OpenSocialCoinInstance.owners.call(0);
       let secondOwner = await OpenSocialCoinInstance.owners.call(1);
 
