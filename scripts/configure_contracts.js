@@ -4,12 +4,9 @@ const LockedTokens = artifacts.require("LockedTokens");
 const OpenSocialCoin = artifacts.require("OpenSocialCoin");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
+const config = require("../test/_config.js");
+
 module.exports = async (callback) => {
-  const privateSaleHardCap = 655;
-  const softCap = 1500;
-  const hardCap = 2500;
-  const tokenPriceNum = 10000;
-  const tokenPriceDenom = 1;
 
   console.log("Configure OpenSocialCoin at " + OpenSocialCoin.address);
 
@@ -34,17 +31,17 @@ module.exports = async (callback) => {
 
   console.log("Configure OpenSocialDAICO at " + OpenSocialDAICO.address);
 
-  console.log("... setting private sale hardCap to " + privateSaleHardCap + " ETH.");
-  OpenSocialDAICO.at(OpenSocialDAICO.address).setPrivateSaleHardCap(web3.toWei(privateSaleHardCap, "ether"));
+  console.log("... setting private sale hardCap to " + config.privateSaleHardCap + " ETH.");
+  OpenSocialDAICO.at(OpenSocialDAICO.address).setPrivateSaleHardCap(web3.toWei(config.privateSaleHardCap, "ether"));
 
-  console.log("... setting soft cap to " + softCap + " ETH.");
-  OpenSocialDAICO.at(OpenSocialDAICO.address).setSoftCap(web3.toWei(softCap, "ether"));
+  console.log("... setting soft cap to " + config.softCap + " ETH.");
+  OpenSocialDAICO.at(OpenSocialDAICO.address).setSoftCap(web3.toWei(config.softCap, "ether"));
 
-  console.log("... setting hard cap to " + hardCap + " ETH.");
-  OpenSocialDAICO.at(OpenSocialDAICO.address).setHardCap(web3.toWei(hardCap, "ether"));
+  console.log("... setting hard cap to " + config.hardCap + " ETH.");
+  OpenSocialDAICO.at(OpenSocialDAICO.address).setHardCap(web3.toWei(config.hardCap, "ether"));
 
-  console.log("... setting tokenPrice to " + tokenPriceNum + " OSC equals " + tokenPriceDenom + " ETH.");
-  OpenSocialDAICO.at(OpenSocialDAICO.address).setTokenPrice(tokenPriceNum, tokenPriceDenom);
+  console.log("... setting tokenPrice to " + config.tokenPriceNum + " OSC equals " + config.tokenPriceDenom + " ETH.");
+  OpenSocialDAICO.at(OpenSocialDAICO.address).setTokenPrice(config.tokenPriceNum, config.tokenPriceDenom);
 
   console.log("... setting lockedTokensAddress to " + LockedTokens.address);
   OpenSocialDAICO.at(OpenSocialDAICO.address).setLockedTokens(LockedTokens.address);
