@@ -67,7 +67,7 @@ The migration script will deploy the contracts on the Ganache blockchain. Make s
 These contracts will be deployed and accessible:
 
 * **Crowdsale.sol:**
-The OpenSocialDAICO contract that distributes payments to the correct funds and allows contributors to refund.
+The THXTokenDAICO contract that distributes payments to the correct funds and allows contributors to refund.
 
 * **PollManagedFund.sol:**
 The fund holding the teams ETH, releasing some each month depending on the tap configuration
@@ -75,7 +75,7 @@ The fund holding the teams ETH, releasing some each month depending on the tap c
 * **ReservationFund.sol:**
 The fund holding ETH send to the Crowdsale contract by contributors prior to passing their KYC
 
-* **OpenSocialCoin.sol:**
+* **THXToken.sol:**
 The Token contract listing all contributors that are allowed to have tokens.
 
 * **LockedTokens.sol:**
@@ -108,7 +108,7 @@ Use these commands to get the current ETH or THX balances for accounts or contra
 
 ```javascript
 // Get THX balance of a specific user
-OpenSocialCoin.at(OpenSocialCoin.address).balances(web3.eth.accounts[10])
+THXToken.at(THXToken.address).balances(web3.eth.accounts[10])
 // Get ETH balance of a specific user
 web3.eth.getBalance(web3.eth.accounts[10])
 // Log all balances in console
@@ -131,24 +131,24 @@ Before contributors contribute ETH they should pass KYC and be listed so we know
 
 ```javascript
 // If you need to add a user to multiple lists use this method.
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, false);
+THXTokenDAICO.at(THXTokenDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, false);
 // Add address to whitelist with additional bonus
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, true);
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToWhiteList(web3.eth.accounts[10]);
+THXTokenDAICO.at(THXTokenDAICO.address).addToLists(web3.eth.accounts[10], true, false, false, true);
+THXTokenDAICO.at(THXTokenDAICO.address).addToWhiteList(web3.eth.accounts[10]);
 // Add address to privilegedList with no additional bonus
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, false);
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToPrivilegedList(web3.eth.accounts[10]);
+THXTokenDAICO.at(THXTokenDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, false);
+THXTokenDAICO.at(THXTokenDAICO.address).addToPrivilegedList(web3.eth.accounts[10]);
 // Add address to privilegedList with additional bonus
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, true);
-OpenSocialDAICO.at(OpenSocialDAICO.address).addToPrivilegedList(web3.eth.accounts[10]);
-OpenSocialDAICO.at(OpenSocialDAICO.address).addAdditionalBonusMember(web3.eth.accounts[10]);
+THXTokenDAICO.at(THXTokenDAICO.address).addToLists(web3.eth.accounts[10], false, true, false, true);
+THXTokenDAICO.at(THXTokenDAICO.address).addToPrivilegedList(web3.eth.accounts[10]);
+THXTokenDAICO.at(THXTokenDAICO.address).addAdditionalBonusMember(web3.eth.accounts[10]);
 
 // Check if user is in whiteList
-OpenSocialDAICO.at(OpenSocialDAICO.address).whiteList.call(web3.eth.accounts[10])
+THXTokenDAICO.at(THXTokenDAICO.address).whiteList.call(web3.eth.accounts[10])
 // Check if user is in privilegedList
-OpenSocialDAICO.at(OpenSocialDAICO.address).privilegedList.call(web3.eth.accounts[10])
+THXTokenDAICO.at(THXTokenDAICO.address).privilegedList.call(web3.eth.accounts[10])
 // Check if user has additional bonus @TODO this transaction needs more research
-OpenSocialDAICO.at(OpenSocialDAICO.address).additionalBonusOwnerState.call(web3.eth.accounts[10])
+THXTokenDAICO.at(THXTokenDAICO.address).additionalBonusOwnerState.call(web3.eth.accounts[10])
 ```
 
 ### During the crowdsale
@@ -157,13 +157,13 @@ Call for stats on total token supply, total ether contributed and amount ether c
 
 ```javascript
 // Check the totalEtherContributed during the crowdsale
-OpenSocialDAICO.at(OpenSocialDAICO.address).totalEtherContributed.call();
+THXTokenDAICO.at(THXTokenDAICO.address).totalEtherContributed.call();
 // Check the total generated amount of tokens
-OpenSocialCoin.at(OpenSocialCoin.address).totalSupply.call()
+THXToken.at(THXToken.address).totalSupply.call()
 // Check the amount a user has contributed
-OpenSocialDAICO.at(OpenSocialDAICO.address).userTotalContributed.call(web3.eth.accounts[10])
+THXTokenDAICO.at(THXTokenDAICO.address).userTotalContributed.call(web3.eth.accounts[10])
 // Contribute 20 ether from account 11
-OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({ from: web3.eth.accounts[11], to: OpenSocialDAICO.address, value: web3.toWei(20, "ether") });
+THXTokenDAICO.at(THXTokenDAICO.address).sendTransaction({ from: web3.eth.accounts[11], to: THXTokenDAICO.address, value: web3.toWei(20, "ether") });
 ```
 
 ### Finalizing the Crowdsale
@@ -174,28 +174,28 @@ Finalize the crowdsale, enable token transfers and disable the limits. Transfer 
 // Check the current state of the PollManagedFund
 PollManagedFund.at(PollManagedFund.address).state.call();
 // Finalize the crowdsale when sale is ended or hardcap is met
-OpenSocialDAICO.at(OpenSocialDAICO.address).finalizeCrowdsale();
+THXTokenDAICO.at(THXTokenDAICO.address).finalizeCrowdsale();
 // Check if issuance is finished
-OpenSocialCoin.at(OpenSocialCoin.address).issuanceFinished.call()
+THXToken.at(THXToken.address).issuanceFinished.call()
 // Check if coin transfers are allowed
-OpenSocialCoin.at(OpenSocialCoin.address).allowTransfers.call()
+THXToken.at(THXToken.address).allowTransfers.call()
 // Allow transfers
-OpenSocialCoin.at(OpenSocialCoin.address).enableTransfers()
+THXToken.at(THXToken.address).enableTransfers()
 // Check if we are in limited transfer period
-OpenSocialCoin.at(OpenSocialCoin.address).isLimitEnabled.call();
+THXToken.at(THXToken.address).isLimitEnabled.call();
 // Approve tokens to be transferred during limited period
-OpenSocialCoin.at(OpenSocialCoin.address).addLimitedWalletAddress(web3.eth.accounts[10]);
-OpenSocialCoin.at(OpenSocialCoin.address).increaseApproval(web3.eth.accounts[10], 10000 * (10 ^ 18));
+THXToken.at(THXToken.address).addLimitedWalletAddress(web3.eth.accounts[10]);
+THXToken.at(THXToken.address).increaseApproval(web3.eth.accounts[10], 10000 * (10 ^ 18));
 // Disable limit
-OpenSocialCoin.at(OpenSocialCoin.address).disableLimit()
+THXToken.at(THXToken.address).disableLimit()
 // Display the current token balances of accounts
-OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[10]);
-OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[11]);
+THXToken.at(THXToken.address).balanceOf(web3.eth.accounts[10]);
+THXToken.at(THXToken.address).balanceOf(web3.eth.accounts[11]);
 // Transfer 1000 THX from accounts 10 to accounts 11
-OpenSocialCoin.at(OpenSocialCoin.address).approve(web3.eth.accounts[10], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] });
-OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] })
+THXToken.at(THXToken.address).approve(web3.eth.accounts[10], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] });
+THXToken.at(THXToken.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] })
 // Check how much accounts 10 allowed account 11
-OpenSocialCoin.at(OpenSocialCoin.address).allowed(web3.eth.accounts[10], web3.eth.accounts[11]);
+THXToken.at(THXToken.address).allowed(web3.eth.accounts[10], web3.eth.accounts[11]);
 
 ```
 
@@ -205,7 +205,7 @@ Force the state of the Poll Managed Fund in Refund mode and refund crowdsale con
 
 ```javascript
 // Force refund state (only refundManager as defined during deployment)
-OpenSocialDAICO.at(OpenSocialDAICO.address).forceCrowdsaleRefund()
+THXTokenDAICO.at(THXTokenDAICO.address).forceCrowdsaleRefund()
 // Check the current state of the PollManagedFund
 PollManagedFund.at(PollManagedFund.address).state.call();
 // Call refund method from a specific account when contract is in Refund state
@@ -232,7 +232,7 @@ truffle exec scripts/time/end_public.js --network ganache;
 Finalize the crowdsale and check if the Poll Managed Fund has the TeamWithDraw state.
 
 ```javascript
-OpenSocialDAICO.at(OpenSocialDAICO.address).finalizeCrowdsale();
+THXTokenDAICO.at(THXTokenDAICO.address).finalizeCrowdsale();
 // Should return 2 (withdraw mode)
 PollManagedFund.at(PollManagedFund.address).state.call();
 ```
