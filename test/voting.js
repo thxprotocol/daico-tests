@@ -1,40 +1,40 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 const ReservationFund = artifacts.require("ReservationFund");
 const LockedTokens = artifacts.require("LockedTokens");
-const OpenSocialCoin = artifacts.require("OpenSocialCoin");
+const THXToken = artifacts.require("THXToken");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
 const sharedConfig = require('./_shared_config.js');
 const timeTravel = require("../scripts/time_travel.js");
 
-contract('OpenSocialDAICO', async (accounts) => {
+contract('THXTokenDAICO', async (accounts) => {
     const CREATE_TAPPOLL_DATE = 1549784558;
 
     it("All instances should be available", async() => {
       context = await sharedConfig.run(accounts);
 
-      ({ OpenSocialDAICOInstance, ReservationFundInstance, OpenSocialCoinInstance, PollManagedFundInstance, LockedTokensInstance } = context);
+      ({ THXTokenDAICOInstance, ReservationFundInstance, THXTokenInstance, PollManagedFundInstance, LockedTokensInstance } = context);
 
-      assert(OpenSocialDAICOInstance !== undefined, 'has OpenSocialDAICOInstance instance');
+      assert(THXTokenDAICOInstance !== undefined, 'has THXTokenDAICOInstance instance');
       assert(ReservationFundInstance !== undefined, 'has ReservationFundInstance instance');
-      assert(OpenSocialCoinInstance !== undefined, 'has OpenSocialCoinInstance instance');
+      assert(THXTokenInstance !== undefined, 'has THXTokenInstance instance');
       assert(PollManagedFundInstance !== undefined, 'has PollManagedFundInstance instance');
       assert(LockedTokensInstance !== undefined, 'has LockedTokensInstance instance');
     });
 
     it("Contributors should contribute as much as the hard cap", async() => {
-      let crowdSaleStartTime = await OpenSocialDAICOInstance.SALE_START_TIME.call();
+      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
       let blocktime = web3.eth.getBlock('latest').timestamp;
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
 
       for (let i = 10; i < 35; i++) {
-        await OpenSocialDAICOInstance.addToLists(accounts[i], true, false, false, false);
+        await THXTokenDAICOInstance.addToLists(accounts[i], true, false, false, false);
 
         for (let j = 0; j < 5; j++) {
-          await OpenSocialDAICOInstance.sendTransaction({
+          await THXTokenDAICOInstance.sendTransaction({
               from: accounts[i],
-              to: OpenSocialDAICO.address,
+              to: THXTokenDAICO.address,
               value: web3.toWei(20, "ether")
           });
           console.log('... #' + i + ' contributed 20 ETH [' + (j + 1) + 'x]');
@@ -47,12 +47,12 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("The manager should be able to finalize the crowdsale and set the state to TeamWithdraw mode", async() => {
-      let crowdSaleEndTime = await OpenSocialDAICOInstance.SALE_END_TIME.call();
+      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
       let blocktime = web3.eth.getBlock('latest').timestamp;
 
       await timeTravel(crowdSaleEndTime - blocktime);
 
-      await OpenSocialDAICOInstance.finalizeCrowdsale();
+      await THXTokenDAICOInstance.finalizeCrowdsale();
 
       let state = (await PollManagedFundInstance.state.call()).valueOf();
 

@@ -1,41 +1,41 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 const ReservationFund = artifacts.require("ReservationFund");
 const LockedTokens = artifacts.require("LockedTokens");
-const OpenSocialCoin = artifacts.require("OpenSocialCoin");
+const THXToken = artifacts.require("THXToken");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
 const sharedConfig = require('./_shared_config.js');
 const timeTravel = require("../scripts/time_travel.js");
 
-contract('OpenSocialDAICO', async (accounts) => {
+contract('THXTokenDAICO', async (accounts) => {
 
     it("All instances should be available", async () => {
       context = await sharedConfig.run(accounts);
 
-      ({ OpenSocialDAICOInstance, ReservationFundInstance, OpenSocialCoinInstance, PollManagedFundInstance, LockedTokensInstance } = context);
+      ({ THXTokenDAICOInstance, ReservationFundInstance, THXTokenInstance, PollManagedFundInstance, LockedTokensInstance } = context);
 
-      assert(OpenSocialDAICOInstance !== undefined, 'has OpenSocialDAICOInstance instance');
+      assert(THXTokenDAICOInstance !== undefined, 'has THXTokenDAICOInstance instance');
       assert(ReservationFundInstance !== undefined, 'has ReservationFundInstance instance');
-      assert(OpenSocialCoinInstance !== undefined, 'has OpenSocialCoinInstance instance');
+      assert(THXTokenInstance !== undefined, 'has THXTokenInstance instance');
       assert(PollManagedFundInstance !== undefined, 'has PollManagedFundInstance instance');
       assert(LockedTokensInstance !== undefined, 'has LockedTokensInstance instance');
     });
 
     it("A privileged contributor should be able to contribute to the teamWallet if contributor is in privilegedList", async () => {
-      let privateSaleStartTime = await OpenSocialDAICOInstance.PRIVATE_SALE_START_TIME.call();
+      let privateSaleStartTime = await THXTokenDAICOInstance.PRIVATE_SALE_START_TIME.call();
       let blocktime = await web3.eth.getBlock('latest').timestamp;
 
       await timeTravel(privateSaleStartTime - blocktime);
 
-      await OpenSocialDAICOInstance.addToLists(accounts[12], false, true, false, true);
+      await THXTokenDAICOInstance.addToLists(accounts[12], false, true, false, true);
 
-      let teamWalletAddress = await OpenSocialDAICOInstance.teamWallet.call();
+      let teamWalletAddress = await THXTokenDAICOInstance.teamWallet.call();
       var balance = await web3.eth.getBalance(teamWalletAddress);
       let teamWalletBalance = web3.fromWei(balance.valueOf(), "ether");
 
-      await OpenSocialDAICOInstance.sendTransaction({
+      await THXTokenDAICOInstance.sendTransaction({
           from: accounts[12],
-          to: OpenSocialDAICO.address,
+          to: THXTokenDAICO.address,
           value: web3.toWei(500, "ether")
       });
 
@@ -48,14 +48,14 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", async () => {
-        let crowdSaleStartTime = await OpenSocialDAICOInstance.SALE_START_TIME.call();
+        let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
         let blocktime = await web3.eth.getBlock('latest').timestamp;
 
         await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
 
-        await OpenSocialDAICOInstance.sendTransaction({
+        await THXTokenDAICOInstance.sendTransaction({
             from: accounts[10],
-            to: OpenSocialDAICO.address,
+            to: THXTokenDAICO.address,
             value: web3.toWei(250, "ether")
         });
 
@@ -66,7 +66,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("Contributions in the Reservation Fund should be transfered to the Poll Managed Fund when the contributor becomes whitelisted", async () => {
-        await OpenSocialDAICOInstance.addToLists(accounts[10], true, false, false, false);
+        await THXTokenDAICOInstance.addToLists(accounts[10], true, false, false, false);
 
         var balance = await web3.eth.getBalance(PollManagedFund.address);
         let PollManagedFundBalance = balance.valueOf();
@@ -80,10 +80,10 @@ contract('OpenSocialDAICO', async (accounts) => {
     });
 
     it("A contributor should be able to contribute to the Poll Managed Fund if contributor is already whitelisted", async () => {
-        await OpenSocialDAICOInstance.addToLists(accounts[11], true, false, false, false);
-        await OpenSocialDAICOInstance.sendTransaction({
+        await THXTokenDAICOInstance.addToLists(accounts[11], true, false, false, false);
+        await THXTokenDAICOInstance.sendTransaction({
             from: accounts[11],
-            to: OpenSocialDAICO.address,
+            to: THXTokenDAICO.address,
             value: web3.toWei(500, "ether")
         });
 
@@ -98,7 +98,7 @@ contract('OpenSocialDAICO', async (accounts) => {
     it("A contributor should be able to refund its payment when soft cap is not met", async () => {
         let oldBalance = await web3.eth.getBalance(accounts[11]);
 
-        await OpenSocialDAICOInstance.forceCrowdsaleRefund();
+        await THXTokenDAICOInstance.forceCrowdsaleRefund();
 
         let state = (await PollManagedFundInstance.state.call()).valueOf();
 

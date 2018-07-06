@@ -1,7 +1,7 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 
 module.exports = async (callback) => {
-  const SALE_END_TIME = await OpenSocialDAICO.at(OpenSocialDAICO.address).SALE_END_TIME.call()
+  const SALE_END_TIME = await THXTokenDAICO.at(THXTokenDAICO.address).SALE_END_TIME.call()
   const jsonrpc = '2.0'
   const id = 0
 

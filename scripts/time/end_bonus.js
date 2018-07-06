@@ -1,7 +1,7 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 
 module.exports = async (callback) => {
-  const MAX_CONTRIB_CHECK_END_TIME = await OpenSocialDAICO.at(OpenSocialDAICO.address).BONUS_WINDOW_4_END_TIME.call()
+  const MAX_CONTRIB_CHECK_END_TIME = await THXTokenDAICO.at(THXTokenDAICO.address).BONUS_WINDOW_4_END_TIME.call()
   const jsonrpc = '2.0'
   const id = 0
 

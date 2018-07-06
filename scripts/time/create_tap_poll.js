@@ -1,4 +1,4 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 
 module.exports = async (callback) => {
   const CREATE_TAP_POLL_TIME = 1549784558; // Sun, 10 Feb 2019 09:42:38 +0200

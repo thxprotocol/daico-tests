@@ -1,11 +1,11 @@
-const OpenSocialCoin = artifacts.require("OpenSocialCoin");
+const THXToken = artifacts.require("THXToken");
 const ReservationFund = artifacts.require("ReservationFund");
 const PollManagedFund= artifacts.require("PollManagedFund");
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 const LockedTokens = artifacts.require("LockedTokens");
 
 module.exports = function(deployer, network, accounts) {
-    deployer.deploy(OpenSocialCoin,
+    deployer.deploy(THXToken,
         _listener = '',
         _owners = [],
         manager = accounts[0]
@@ -29,9 +29,9 @@ module.exports = function(deployer, network, accounts) {
         );
     })
     .then(function() {
-        return deployer.deploy(OpenSocialDAICO,
+        return deployer.deploy(THXTokenDAICO,
             bnbTokenAddress = '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
-            tokenAddress = OpenSocialCoin.address,
+            tokenAddress = THXToken.address,
             fundAddress = PollManagedFund.address,
             reservationFundAddress = ReservationFund.address,
             _bnbTokenWallet = accounts[8],
@@ -47,8 +47,8 @@ module.exports = function(deployer, network, accounts) {
     })
     .then(function() {
         return deployer.deploy(LockedTokens,
-            OpenSocialCoin.address,
-            OpenSocialDAICO.address
+            THXToken.address,
+            THXTokenDAICO.address
         );
     });
 };

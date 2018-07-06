@@ -1,4 +1,4 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 
 module.exports = async (callback) => {
   const CREATE_REFUND_POLL_TIME = 1554076800; // 01.04.2019

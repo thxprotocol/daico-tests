@@ -1,5 +1,5 @@
 # DAICO Smart Contracts
-This repository holds the Smart Contracts, deployment/migration, test and configuration scripts for the OpenSocial DAICO Smart Contracts. Helper scripts for manually testing and debugging the contracts are also provided.
+This repository holds the Smart Contracts, deployment/migration, test and configuration scripts for the THX Token Sale Smart Contracts. Helper scripts for manually testing and debugging the contracts are also provided.
 
 Clone the repository recursively so the forked contracts repo will also be cloned.
 
@@ -102,12 +102,12 @@ These commands help you testing and using the contracts through the truffle cons
 truffle console --network ganache
 ```
 
-### Getting ETH and OSC balances from contracts and accounts
+### Getting ETH and THX balances from contracts and accounts
 
-Use these commands to get the current ETH or OSC balances for accounts or contracts.
+Use these commands to get the current ETH or THX balances for accounts or contracts.
 
 ```javascript
-// Get OSC balance of a specific user
+// Get THX balance of a specific user
 OpenSocialCoin.at(OpenSocialCoin.address).balances(web3.eth.accounts[10])
 // Get ETH balance of a specific user
 web3.eth.getBalance(web3.eth.accounts[10])
@@ -123,14 +123,11 @@ web3.eth.getBalance(PollManagedFund.address);
 
 Before contributors contribute ETH they should pass KYC and be listed so we know where the funds come from. There are 3 lists with different purposes giving contributing different conditions to contribute under.
 
-#### PrivilegedList:
-PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 3000 ETH. Set the hasAdditionalBonus parameter true to make sure the Private Sale contributor receives its 20% bonus.
-
-#### Whitelist:
-Within the first day of the crowdsale whiteListed addresses can contribute a minimum of 0.2 ETH up to a maximum of 20 ETH.
-
-#### LimitedList:
-LimitedList: Used for US contributors. Their funds are locked for 365 days in a limited wallet and therefor can not be transferred.
+| List # | Description |
+|-|-|
+| PrivilegedList | PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 3000 ETH. Set the hasAdditionalBonus parameter true to make sure the Private Sale contributor receives its 20% bonus. |
+| WhiteList | Within the first day of the crowdsale whiteListed addresses can contribute a minimum of 0.2 ETH up to a maximum of 20 ETH. |
+| LimitedList | Used for US contributors. Their funds are locked for 365 days in a limited wallet and therefor can not be transferred. |
 
 ```javascript
 // If you need to add a user to multiple lists use this method.
@@ -171,7 +168,7 @@ OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({ from: web3.eth.acc
 
 ### Finalizing the Crowdsale
 
-Finalize the crowdsale, enable token transfers and disable the limits. Transfer 10000 OSC from account 10 to account 11.
+Finalize the crowdsale, enable token transfers and disable the limits. Transfer 10000 THX from account 10 to account 11.
 
 ```javascript
 // Check the current state of the PollManagedFund
@@ -194,7 +191,7 @@ OpenSocialCoin.at(OpenSocialCoin.address).disableLimit()
 // Display the current token balances of accounts
 OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[10]);
 OpenSocialCoin.at(OpenSocialCoin.address).balanceOf(web3.eth.accounts[11]);
-// Transfer 1000 OSC from accounts 10 to accounts 11
+// Transfer 1000 THX from accounts 10 to accounts 11
 OpenSocialCoin.at(OpenSocialCoin.address).approve(web3.eth.accounts[10], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] });
 OpenSocialCoin.at(OpenSocialCoin.address).transferFrom(web3.eth.accounts[10], web3.eth.accounts[11], 10000 * (10 ^ 18), { from: web3.eth.accounts[10] })
 // Check how much accounts 10 allowed account 11

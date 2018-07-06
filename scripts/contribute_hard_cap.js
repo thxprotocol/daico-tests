@@ -1,14 +1,14 @@
-const OpenSocialDAICO = artifacts.require("OpenSocialDAICO");
+const THXTokenDAICO = artifacts.require("THXTokenDAICO");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
 module.exports = async (callback) => {
   for (let i = 10; i < 35; i++) {
-    await OpenSocialDAICO.at(OpenSocialDAICO.address).addToWhiteList(web3.eth.accounts[i]);
+    await THXTokenDAICO.at(THXTokenDAICO.address).addToWhiteList(web3.eth.accounts[i]);
 
     for (let j = 0; j < 5; j++) {
-      await OpenSocialDAICO.at(OpenSocialDAICO.address).sendTransaction({
+      await THXTokenDAICO.at(THXTokenDAICO.address).sendTransaction({
           from: web3.eth.accounts[i],
-          to: OpenSocialDAICO.address,
+          to: THXTokenDAICO.address,
           value: web3.toWei(20, "ether")
       });
 
