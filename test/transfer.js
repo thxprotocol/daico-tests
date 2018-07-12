@@ -61,8 +61,8 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(tx2 != null, "Transaction 2 of 750 ETH failed.");
       assert(tx3 != null, "Transaction 3 of 750 ETH failed.");
 
-      assert.equal(state, 2, "The current state is " + state + " and not " + 2 + ".");
-      assert.equal(balance, config.tokenPriceNum * 1.1, "Token amount is not correct.");
+      assert(state == 2, "The current state is " + state + " and not " + 2 + ".");
+      assert(balance == config.tokenPriceNum * 1.1, "Token amount is not correct.");
     });
 
     it("Contributor should be able to transfer his tokens to another wallet.", async() => {
@@ -79,8 +79,8 @@ contract('THXTokenDAICO', async (accounts) => {
       var balanceSender = web3.fromWei(await THXTokenInstance.balanceOf(accounts[10]), "ether").valueOf();
       var balanceReceiver = web3.fromWei(await THXTokenInstance.balanceOf(accounts[15]), "ether").valueOf();
 
-      assert.equal(balanceSender, 0, "Token amount is not correct.");
-      assert.equal(balanceReceiver, amount, "Token amount is not correct.");
+      assert(balanceSender == 0, "Token amount is not correct.");
+      assert(balanceReceiver == amount, "Token amount is not correct.");
     });
 
 });

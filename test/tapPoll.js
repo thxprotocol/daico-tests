@@ -24,9 +24,9 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Contributors should contribute as much as the hard cap", async() => {
       let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
-      let blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
+
+      await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
 
       for (let i = 10; i < 35; i++) {
         await THXTokenDAICOInstance.addToLists(accounts[i], true, false, false, false);
@@ -37,7 +37,6 @@ contract('THXTokenDAICO', async (accounts) => {
               to: THXTokenDAICO.address,
               value: web3.toWei(20, "ether")
           });
-          console.log('... #' + i + ' contributed 20 ETH [' + (j + 1) + 'x]');
         }
       }
 
@@ -48,9 +47,9 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("The manager should be able to finalize the crowdsale and set the state to TeamWithdraw mode", async() => {
       let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
-      let blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(crowdSaleEndTime - blocktime);
+
+      await timeTravel(crowdSaleEndTime - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.finalizeCrowdsale();
 
@@ -60,9 +59,9 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("The team should be able to create a tap poll that increases the tap with 10%", async() => {
-      let blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(CREATE_TAPPOLL_DATE - blocktime);
+
+      await timeTravel(CREATE_TAPPOLL_DATE - (web3.eth.getBlock('latest').timestamp));
 
       await PollManagedFundInstance.createTapPoll(10);
 
@@ -71,7 +70,7 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(tapPollAddress != "0x0000000000000000000000000000000000000000", "Tap poll is created");
     });
 
-    it("A contributor should be able to vote YES on the tap poll", async () => {
+    it("A token holder should be able to vote YES on the tap poll", async () => {
       let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
         from: accounts[10],
@@ -83,7 +82,7 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(tx != null);
     });
 
-    it("A contributor should be able to vote NO on the tap poll", async () => {
+    it("A token holder should be able to vote NO on the tap poll", async () => {
       let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
         from: accounts[11],
@@ -95,7 +94,7 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(tx != null);
     });
 
-    it("A contributor should be able to revoke his tap poll vote", async () => {
+    it("A token holder should be able to revoke his tap poll vote", async () => {
       let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
       let tx = await web3.eth.sendTransaction({
         from: accounts[11],

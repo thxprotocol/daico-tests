@@ -26,9 +26,9 @@ contract('THXTokenDAICO', async (accounts) => {
       // Contribute in bonus window 1
       let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call().valueOf();
       let bonusWindow1EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_1_END_TIME.call().valueOf();
-      var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // + 86400 seconds == 1 day
+
+      await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[10]);
       let tx = await THXTokenDAICOInstance.sendTransaction({
@@ -41,18 +41,14 @@ contract('THXTokenDAICO', async (accounts) => {
 
       assert(blocktime > crowdSaleStartTime && blocktime < bonusWindow1EndTime, "Bonus window not correct.");
       assert(tx != null, "Transaction of 1 ETH failed.");
-
     });
 
     it("Contributor should be able to make payment in bonus window 2", async() => {
       // Contribute in bonus window 2
       let bonusWindow1EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_1_END_TIME.call().valueOf();
       let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME.call().valueOf();
-      var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(bonusWindow1EndTime) + 86400) - blocktime); // + 86400 seconds == 1 day
-
-      var blocktime = web3.eth.getBlock('latest').timestamp;
+      await timeTravel((parseInt(bonusWindow1EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[11]);
       let tx = await THXTokenDAICOInstance.sendTransaction({
@@ -61,20 +57,18 @@ contract('THXTokenDAICO', async (accounts) => {
           value: web3.toWei(1, "ether")
       });
 
+      var blocktime = web3.eth.getBlock('latest').timestamp;
+
       assert(blocktime > bonusWindow1EndTime && blocktime < bonusWindow2EndTime, "Bonus window not correct.");
       assert(tx != null, "Transaction of 1 ETH failed.");
-
     });
 
     it("Contributor should be able to make payment in bonus window 3", async() => {
       // Contribute in bonus window 3
       let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME.call().valueOf();
       let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME.call().valueOf();
-      var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - blocktime); // + 86400 seconds == 1 day
-
-      var blocktime = web3.eth.getBlock('latest').timestamp;
+      await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[12]);
       let tx = await THXTokenDAICOInstance.sendTransaction({
@@ -83,19 +77,17 @@ contract('THXTokenDAICO', async (accounts) => {
           value: web3.toWei(1, "ether")
       });
 
+      var blocktime = web3.eth.getBlock('latest').timestamp;
+
       assert(blocktime > bonusWindow2EndTime && blocktime < bonusWindow3EndTime, "Bonus window not correct.");
       assert(tx != null, "Transaction of 1 ETH failed.");
-
     });
 
     it("Contributor should be able to make payment outside of bonus windows", async() => {
       // Contribute with no bonus
       let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME.call().valueOf();
-      var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(bonusWindow3EndTime) + 86400) - blocktime);
-
-      var blocktime = web3.eth.getBlock('latest').timestamp;
+      await timeTravel((parseInt(bonusWindow3EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[13]); // + 86400 seconds == 1 day
       let tx = await THXTokenDAICOInstance.sendTransaction({
@@ -104,9 +96,10 @@ contract('THXTokenDAICO', async (accounts) => {
           value: web3.toWei(1, "ether")
       });
 
+      var blocktime = web3.eth.getBlock('latest').timestamp;
+
       assert(blocktime > bonusWindow3EndTime, "Bonus window not correct.");
       assert(tx != null, "Transaction of 1 ETH failed.");
-
     });
 
     it("1st week contributor should receive 10% more tokens.", async() => {

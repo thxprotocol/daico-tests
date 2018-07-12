@@ -25,27 +25,24 @@ contract('THXTokenDAICO', async (accounts) => {
     it("Crowdsale should reach soft cap and set the fund in Withdraw Mode.", async () => {
       let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
       let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
-      var blocktime = await web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel((parseInt(crowdSaleStartTime) + 86401) - blocktime); // 86400 seconds == 1 day
+      await timeTravel((parseInt(crowdSaleStartTime) + 86401) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[10]);
-      await THXTokenDAICO.at(THXTokenDAICO.address).sendTransaction({
+      await THXTokenDAICOInstance.sendTransaction({
           from: accounts[10],
           to: THXTokenDAICO.address,
           value: web3.toWei(750, "ether")
       });
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[11]);
-      await THXTokenDAICO.at(THXTokenDAICO.address).sendTransaction({
+      await THXTokenDAICOInstance.sendTransaction({
           from: accounts[11],
           to: THXTokenDAICO.address,
           value: web3.toWei(750, "ether")
       });
 
-      var blocktime = web3.eth.getBlock('latest').timestamp;
-
-      await timeTravel(crowdSaleEndTime - blocktime);
+      await timeTravel(crowdSaleEndTime - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.finalizeCrowdsale();
 
@@ -70,21 +67,19 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Team wallet should be able to withdraw 250 ETH 30 days after the end of the crowdsale.", async() => {
       let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
-      var blocktime = web3.eth.getBlock('latest').timestamp;
       let teamWallet = await PollManagedFundInstance.teamWallet.call();
 
-      await timeTravel((parseInt(crowdSaleEndTime) + (30 * 86400)) - blocktime); // 30 days
+      await timeTravel((parseInt(crowdSaleEndTime) + (30 * 86400)) - (web3.eth.getBlock('latest').timestamp)); // 30 days
 
       let amount = web3.fromWei(web3.eth.getBalance(teamWallet), "ether").valueOf();
 
       await PollManagedFundInstance.withdraw();
 
       let newAmount = web3.fromWei(web3.eth.getBalance(teamWallet), "ether").valueOf();
-      var currentTapAmount = web3.fromWei(await PollManagedFundInstance.getCurrentTapAmount(), "ether").valueOf();
+      let currentTapAmount = web3.fromWei(await PollManagedFundInstance.getCurrentTapAmount(), "ether").valueOf();
 
       assert(currentTapAmount < 1, "Ether not withdrawn from PollManagedFund.")
-      // Just not exactly 1400 because of the time between withdrawel and tapamount calculation
-      assert(newAmount > 1395, "Ether not transfered to Team Wallet.");
+      assert(newAmount > amount, "Ether not transfered to Team Wallet.");
     });
 
 });

@@ -126,8 +126,8 @@ Before contributors contribute ETH they should pass KYC and be listed so we know
 | List # | Description |
 |-|-|
 | PrivilegedList | PrivilegedList addresses can contribute a minimum of 100 ETH up to a maximum of 3000 ETH. Set the hasAdditionalBonus parameter true to make sure the Private Sale contributor receives its 20% bonus. |
-| WhiteList | Within the first day of the crowdsale whiteListed addresses can contribute a minimum of 0.2 ETH up to a maximum of 20 ETH. |
-| LimitedList | Used for US contributors. Their funds are locked for 365 days in a limited wallet and therefor can not be transferred. |
+| WhiteList | Within the first day of the sale whiteListed addresses can contribute a minimum of 0.2 ETH up to a maximum of 20 ETH. |
+| LimitedList | Used for US accredited contributors. Their funds are locked for 365 days in a limited wallet and therefor can not be transferred. |
 
 ```javascript
 // If you need to add a user to multiple lists use this method.

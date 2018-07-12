@@ -1,7 +1,5 @@
-const THXTokenDAICO = artifacts.require("THXTokenDAICO");
-
 module.exports = async (callback) => {
-  const CREATE_REFUND_POLL_TIME = 1554076800; // 01.04.2019
+  const CREATE_REFUND_POLL_TIME = await PollManagedFund.at(PollManagedFund.address).refundPollDates.call(0)
   const jsonrpc = '2.0'
   const id = 0
 
@@ -16,7 +14,7 @@ module.exports = async (callback) => {
     await send('evm_mine')
   }
 
-  await timeTravel(CREATE_REFUND_POLL_TIME - blocktime)
+  await timeTravel(CREATE_REFUND_POLL_TIME - (web3.eth.getBlock('latest').timestamp))
 
   blocktime = await web3.eth.getBlock('latest').timestamp
 

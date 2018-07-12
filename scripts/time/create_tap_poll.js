@@ -1,5 +1,3 @@
-const THXTokenDAICO = artifacts.require("THXTokenDAICO");
-
 module.exports = async (callback) => {
   const CREATE_TAP_POLL_TIME = 1549784558; // Sun, 10 Feb 2019 09:42:38 +0200
   const jsonrpc = '2.0'
@@ -16,7 +14,7 @@ module.exports = async (callback) => {
     await send('evm_mine')
   }
 
-  await timeTravel(CREATE_TAP_POLL_TIME - blocktime)
+  await timeTravel(CREATE_TAP_POLL_TIME - (web3.eth.getBlock('latest').timestamp))
 
   blocktime = await web3.eth.getBlock('latest').timestamp
 

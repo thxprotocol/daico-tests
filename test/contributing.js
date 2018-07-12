@@ -4,6 +4,7 @@ const LockedTokens = artifacts.require("LockedTokens");
 const THXToken = artifacts.require("THXToken");
 const PollManagedFund = artifacts.require("PollManagedFund");
 
+const config = require('./_config.js');
 const sharedConfig = require('./_shared_config.js');
 const timeTravel = require("../scripts/time_travel.js");
 
@@ -21,11 +22,18 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(LockedTokensInstance !== undefined, 'has LockedTokensInstance instance');
     });
 
+    /*********************************************************************************************************
+     * Tests:
+     * 1. Travel to private sale start time
+     * 2. Add account 12 to the priviledged list
+     * 3. Send 500 ETH from account 12 to the crowdsale address
+     * 4. CHeck if the team wallet ETH balance increased
+     *********************************************************************************************************/
     it("A privileged contributor should be able to contribute to the teamWallet if contributor is in privilegedList", async () => {
       let privateSaleStartTime = await THXTokenDAICOInstance.PRIVATE_SALE_START_TIME.call();
       let blocktime = await web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(privateSaleStartTime - blocktime);
+      await timeTravel(privateSaleStartTime - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.addToLists(accounts[12], false, true, false, true);
 
@@ -47,11 +55,18 @@ contract('THXTokenDAICO', async (accounts) => {
       // Check for bonus on contributor token wallet.
     });
 
+    /*********************************************************************************************************
+     * Tests:
+     * 1. Travel to private sale start time
+     * 2. Add account 12 to the priviledged list
+     * 3. Send 500 ETH from account 12 to the crowdsale address
+     * 4. CHeck if the team wallet ETH balance increased
+     *********************************************************************************************************/
     it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", async () => {
         let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
         let blocktime = await web3.eth.getBlock('latest').timestamp;
 
-        await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
+        await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
 
         await THXTokenDAICOInstance.sendTransaction({
             from: accounts[10],

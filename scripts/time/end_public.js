@@ -16,7 +16,7 @@ module.exports = async (callback) => {
     await send('evm_mine')
   }
 
-  await timeTravel(SALE_END_TIME - blocktime)
+  await timeTravel(SALE_END_TIME - (web3.eth.getBlock('latest').timestamp))
 
   blocktime = await web3.eth.getBlock('latest').timestamp
 
