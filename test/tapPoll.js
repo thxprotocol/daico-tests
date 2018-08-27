@@ -23,7 +23,7 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("Contributors should contribute as much as the hard cap", async() => {
-      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
+      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME();
 
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
@@ -46,14 +46,14 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("The manager should be able to finalize the crowdsale and set the state to TeamWithdraw mode", async() => {
-      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
+      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME();
 
 
       await timeTravel(crowdSaleEndTime - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.finalizeCrowdsale();
 
-      let state = (await PollManagedFundInstance.state.call()).valueOf();
+      let state = (await PollManagedFundInstance.state()).valueOf();
 
       assert.equal(state, 2, "The current state is " + state + " and not " + 2 + ".");
     });
@@ -65,13 +65,13 @@ contract('THXTokenDAICO', async (accounts) => {
 
       await PollManagedFundInstance.createTapPoll(10);
 
-      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
+      let tapPollAddress = await PollManagedFundInstance.tapPoll();
 
       assert(tapPollAddress != "0x0000000000000000000000000000000000000000", "Tap poll is created");
     });
 
     it("A token holder should be able to vote YES on the tap poll", async () => {
-      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
+      let tapPollAddress = await PollManagedFundInstance.tapPoll();
       let tx = await web3.eth.sendTransaction({
         from: accounts[10],
         to: tapPollAddress,
@@ -83,7 +83,7 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("A token holder should be able to vote NO on the tap poll", async () => {
-      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
+      let tapPollAddress = await PollManagedFundInstance.tapPoll();
       let tx = await web3.eth.sendTransaction({
         from: accounts[11],
         to: tapPollAddress,
@@ -95,7 +95,7 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("A token holder should be able to revoke his tap poll vote", async () => {
-      let tapPollAddress = await PollManagedFundInstance.tapPoll.call();
+      let tapPollAddress = await PollManagedFundInstance.tapPoll();
       let tx = await web3.eth.sendTransaction({
         from: accounts[11],
         to: tapPollAddress,

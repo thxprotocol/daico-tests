@@ -30,14 +30,14 @@ contract('THXTokenDAICO', async (accounts) => {
      * 4. CHeck if the team wallet ETH balance increased
      *********************************************************************************************************/
     it("A privileged contributor should be able to contribute to the teamWallet if contributor is in privilegedList", async () => {
-      let privateSaleStartTime = await THXTokenDAICOInstance.PRIVATE_SALE_START_TIME.call();
+      let privateSaleStartTime = await THXTokenDAICOInstance.PRIVATE_SALE_START_TIME();
       let blocktime = await web3.eth.getBlock('latest').timestamp;
 
       await timeTravel(privateSaleStartTime - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.addToLists(accounts[12], false, true, false, true);
 
-      let teamWalletAddress = await THXTokenDAICOInstance.teamWallet.call();
+      let teamWalletAddress = await THXTokenDAICOInstance.teamWallet();
       var balance = await web3.eth.getBalance(teamWalletAddress);
       let teamWalletBalance = web3.fromWei(balance.valueOf(), "ether");
 
@@ -63,7 +63,7 @@ contract('THXTokenDAICO', async (accounts) => {
      * 4. CHeck if the team wallet ETH balance increased
      *********************************************************************************************************/
     it("A contributor should be able to contribute to the Reservation Fund if contributor is not whitelisted", async () => {
-        let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
+        let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME();
         let blocktime = await web3.eth.getBlock('latest').timestamp;
 
         await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
@@ -115,7 +115,7 @@ contract('THXTokenDAICO', async (accounts) => {
 
         await THXTokenDAICOInstance.forceCrowdsaleRefund();
 
-        let state = (await PollManagedFundInstance.state.call()).valueOf();
+        let state = (await PollManagedFundInstance.state()).valueOf();
 
         assert.equal(state, 1, "The current state is " + state + " and not 1.");
 

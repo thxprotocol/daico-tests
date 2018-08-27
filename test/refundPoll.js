@@ -11,7 +11,7 @@ const sharedConfig = require('./_shared_config.js');
 const timeTravel = require("../scripts/time_travel.js");
 
 contract('THXTokenDAICO', async (accounts) => {
-    let RefundPollInstance;
+    var RefundPollInstance;
 
     it("All instances should be available", async() => {
       context = await sharedConfig.run(accounts);
@@ -26,41 +26,37 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("Contributors should contribute as much as the hard cap", async() => {
-      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
-
+      let crowdSaleStartTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME();
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
 
       for (let i = 10; i < 35; i++) {
         await THXTokenDAICOInstance.addToLists(accounts[i], true, false, false, false);
+        await THXTokenDAICOInstance.sendTransaction({
+            from: accounts[i],
+            to: THXTokenDAICO.address,
+            value: web3.toWei(100, "ether")
+        });
 
-        for (let j = 0; j < 5; j++) {
-          await THXTokenDAICOInstance.sendTransaction({
-              from: accounts[i],
-              to: THXTokenDAICO.address,
-              value: web3.toWei(20, "ether")
-          });
-        }
+        console.log( web3.fromWei(await THXTokenInstance.balanceOf(web3.eth.accounts[i])).valueOf() );
+        console.log( web3.fromWei(await THXTokenInstance.totalSupply()).valueOf() );
       }
 
       let balance = (await web3.eth.getBalance(PollManagedFund.address)).valueOf();
 
       assert.equal(web3.fromWei(balance, "ether"), config.hardCap, "2500 ether in total is not contributed in the reservation fund");
 
-      var totalSupply = await THXTokenInstance.totalSupply();
-
-      console.log(totalSupply);
     });
 
     it("The manager should be able to finalize the crowdsale and set the state to TeamWithdraw mode", async() => {
-      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
-
+      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME();
 
       await timeTravel(parseInt(crowdSaleEndTime) - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.finalizeCrowdsale();
-
-      let state = (await PollManagedFundInstance.state.call()).valueOf();
+      console.log( web3.fromWei(await THXTokenInstance.balanceOf(web3.eth.accounts[10])).valueOf() );
+      console.log( web3.fromWei(await THXTokenInstance.totalSupply()).valueOf() );
+      let state = (await PollManagedFundInstance.state()).valueOf();
 
       assert.equal(state, 2, "The current state is " + state + " and not " + 2 + ".");
     });
@@ -79,7 +75,7 @@ contract('THXTokenDAICO', async (accounts) => {
 
       await timeTravel(parseInt(firstRefundPollDate) - (web3.eth.getBlock('latest').timestamp));
 
-      var refundPollAddress = await PollManagedFundInstance.refundPoll.call();
+      var refundPollAddress = await PollManagedFundInstance.refundPoll();
 
       assert(refundPollAddress == '0x0000000000000000000000000000000000000000', "Poll should be undefined");
 
@@ -87,7 +83,7 @@ contract('THXTokenDAICO', async (accounts) => {
         from: accounts[10]
       });
 
-      var refundPollAddress = await PollManagedFundInstance.refundPoll.call();
+      var refundPollAddress = await PollManagedFundInstance.refundPoll();
 
       assert(refundPollAddress != '0x0000000000000000000000000000000000000000', "Poll should not be undefined");
 
@@ -103,20 +99,22 @@ contract('THXTokenDAICO', async (accounts) => {
      * 3. Check if the amount of YES votes increased
      *********************************************************************************************************/
     it("Token holders should be able to vote YES on the refund poll", async () => {
-      let refundPollAddress = await PollManagedFundInstance.refundPoll.call();
-      let yesCounter = await RefundPollInstance.yesCounter.call();
+      let refundPollAddress = await PollManagedFundInstance.refundPoll();
+      let yesCounter = await RefundPollInstance.yesCounter();
 
-      for (var i = 10; i < 25; i++) {
+      for (var i = 10; i < 34; i++) {
         let tx = await web3.eth.sendTransaction({
           from: accounts[i],
           to: refundPollAddress,
           data: "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           gas: 200000
         });
+        console.log( web3.fromWei(await THXTokenInstance.balanceOf(web3.eth.accounts[i])).valueOf() );
+        console.log( web3.fromWei(await RefundPollInstance.yesCounter()).valueOf() );
         assert(tx != null);
       }
 
-      let newYesCounter = await RefundPollInstance.yesCounter.call();
+      let newYesCounter = await RefundPollInstance.yesCounter();
 
       assert(newYesCounter > yesCounter, 'no YES votes added');
     });
@@ -129,19 +127,21 @@ contract('THXTokenDAICO', async (accounts) => {
      * 3. Check if the amount of NO votes increased
      *********************************************************************************************************/
     it("Token holders should be able to vote NO on the refund poll", async () => {
-      let refundPollAddress = await PollManagedFundInstance.refundPoll.call();
-      let noCounter = await RefundPollInstance.noCounter.call();
+      let refundPollAddress = await PollManagedFundInstance.refundPoll();
+      let noCounter = await RefundPollInstance.noCounter();
 
-      for (var i = 25; i < 35; i++) {
+      for (var i = 34; i < 35; i++) {
         let tx = await web3.eth.sendTransaction({
           from: accounts[i],
           to: refundPollAddress,
           data: "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           gas: 200000
         });
+        console.log( web3.fromWei(await THXTokenInstance.balanceOf(web3.eth.accounts[i])).valueOf() );
+        console.log( web3.fromWei(await RefundPollInstance.noCounter()).valueOf() );
         assert(tx != null);
       }
-      let newNoCounter = await RefundPollInstance.noCounter.call();
+      let newNoCounter = await RefundPollInstance.noCounter();
 
       assert(newNoCounter > noCounter, 'no NO votes added');
     });
@@ -157,21 +157,21 @@ contract('THXTokenDAICO', async (accounts) => {
      * 6. Check if the second refund poll date is not unset
      *********************************************************************************************************/
     it("A token holder should be able finalize the first refund poll", async () => {
-      let holdEndTime = await RefundPollInstance.holdEndTime.call();
-      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled.call();
-      var state = await PollManagedFundInstance.state.call();
+      let holdEndTime = await RefundPollInstance.holdEndTime();
+      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled();
+      var state = await PollManagedFundInstance.state();
 
       assert(state.valueOf() == 2, "Poll should still be in withdraw mode");
       assert(isWithdrawEnabled == true, "Poll should still be in withdraw mode");
 
       await timeTravel(parseInt(holdEndTime) - (web3.eth.getBlock('latest').timestamp));
 
-      var tx = await RefundPollInstance.tryToFinalize();
+      await RefundPollInstance.tryToFinalize();
 
-      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled.call();
-      let secondRefundPollDate = await PollManagedFundInstance.secondRefundPollDate.call();
+      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled();
+      let secondRefundPollDate = await PollManagedFundInstance.secondRefundPollDate();
 
-      assert(isWithdrawEnabled == false, "Poll should not be in withdraw mode");
+      assert(isWithdrawEnabled == false, "Withdrawing should be disabled");
       assert(secondRefundPollDate != 0, "second refund poll date should be set");
     });
 
@@ -183,19 +183,19 @@ contract('THXTokenDAICO', async (accounts) => {
      * 4. Check if address of the refund poll is no longer unset
      *********************************************************************************************************/
     it("A token holder should be able to create the second refund poll on the correct date.", async() => {
-      let secondRefundPollDate = await PollManagedFundInstance.secondRefundPollDate.call();
+      let secondRefundPollDate = await PollManagedFundInstance.secondRefundPollDate();
 
       await timeTravel(parseInt(secondRefundPollDate) - (web3.eth.getBlock('latest').timestamp));
 
-      var refundPollAddress = await PollManagedFundInstance.refundPoll.call();
+      var refundPollAddress = await PollManagedFundInstance.refundPoll();
 
       assert(refundPollAddress == '0x0000000000000000000000000000000000000000', "Poll should be undefined");
 
-      var tx = await PollManagedFundInstance.createRefundPoll({
+      await PollManagedFundInstance.createRefundPoll({
         from: accounts[10]
       });
 
-      var refundPollAddress = await PollManagedFundInstance.refundPoll.call();
+      var refundPollAddress = await PollManagedFundInstance.refundPoll();
 
       assert(refundPollAddress != '0x0000000000000000000000000000000000000000', "Poll should not be undefined");
 
@@ -204,8 +204,8 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("Token holders should be able to vote YES on the refund poll", async () => {
-      let refundPollAddress = await PollManagedFundInstance.refundPoll.call();
-      let yesCounter = await RefundPollInstance.yesCounter.call();
+      let refundPollAddress = await PollManagedFundInstance.refundPoll();
+      let yesCounter = await RefundPollInstance.yesCounter();
 
       for (var i = 10; i < 25; i++) {
         let tx = await web3.eth.sendTransaction({
@@ -217,14 +217,14 @@ contract('THXTokenDAICO', async (accounts) => {
         assert(tx != null);
       }
 
-      let newYesCounter = await RefundPollInstance.yesCounter.call();
+      let newYesCounter = await RefundPollInstance.yesCounter();
 
       assert(newYesCounter > yesCounter, 'no YES votes added');
     });
 
     it("Token holders should be able to vote NO on the refund poll", async () => {
-      let refundPollAddress = await PollManagedFundInstance.refundPoll.call();
-      let noCounter = await RefundPollInstance.noCounter.call();
+      let refundPollAddress = await PollManagedFundInstance.refundPoll();
+      let noCounter = await RefundPollInstance.noCounter();
 
       for (var i = 25; i < 35; i++) {
         let tx = await web3.eth.sendTransaction({
@@ -235,17 +235,17 @@ contract('THXTokenDAICO', async (accounts) => {
         });
         assert(tx != null);
       }
-      let newNoCounter = await RefundPollInstance.noCounter.call();
+      let newNoCounter = await RefundPollInstance.noCounter();
 
       assert(newNoCounter > noCounter, 'no NO votes added');
     });
 
 
     it("A token holder should be able finalize the second refund poll", async () => {
-      let endTime = await RefundPollInstance.endTime.call();
+      let endTime = await RefundPollInstance.endTime();
 
-      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled.call();
-      var state = await PollManagedFundInstance.state.call();
+      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled();
+      var state = await PollManagedFundInstance.state();
 
       assert(state.valueOf() == 2, "Poll should be in withdraw mode");
       assert(isWithdrawEnabled == false, "Poll should be in withdraw mode");
@@ -255,8 +255,8 @@ contract('THXTokenDAICO', async (accounts) => {
 
       var tx = await RefundPollInstance.tryToFinalize();
 
-      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled.call();
-      var state = await PollManagedFundInstance.state.call();
+      var isWithdrawEnabled = await PollManagedFundInstance.isWithdrawEnabled();
+      var state = await PollManagedFundInstance.state();
 
       assert(state.valueOf() == 3, "Poll should be in refund mode");
     });

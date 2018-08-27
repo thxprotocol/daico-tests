@@ -24,8 +24,8 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Contributor should be able to make payment in bonus window 1", async() => {
       // Contribute in bonus window 1
-      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call().valueOf();
-      let bonusWindow1EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_1_END_TIME.call().valueOf();
+      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME().valueOf();
+      let bonusWindow1EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_1_END_TIME().valueOf();
 
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
@@ -45,8 +45,8 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Contributor should be able to make payment in bonus window 2", async() => {
       // Contribute in bonus window 2
-      let bonusWindow1EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_1_END_TIME.call().valueOf();
-      let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME.call().valueOf();
+      let bonusWindow1EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_1_END_TIME().valueOf();
+      let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME().valueOf();
 
       await timeTravel((parseInt(bonusWindow1EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
 
@@ -65,8 +65,8 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Contributor should be able to make payment in bonus window 3", async() => {
       // Contribute in bonus window 3
-      let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME.call().valueOf();
-      let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME.call().valueOf();
+      let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME().valueOf();
+      let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME().valueOf();
 
       await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
 
@@ -85,7 +85,7 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Contributor should be able to make payment outside of bonus windows", async() => {
       // Contribute with no bonus
-      let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME.call().valueOf();
+      let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME().valueOf();
 
       await timeTravel((parseInt(bonusWindow3EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp));
 

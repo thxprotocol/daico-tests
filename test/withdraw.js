@@ -23,8 +23,8 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("Crowdsale should reach soft cap and set the fund in Withdraw Mode.", async () => {
-      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call();
-      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
+      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME();
+      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME();
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86401) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
 
@@ -46,19 +46,19 @@ contract('THXTokenDAICO', async (accounts) => {
 
       await THXTokenDAICOInstance.finalizeCrowdsale();
 
-      let state = (await PollManagedFundInstance.state.call()).valueOf();
+      let state = (await PollManagedFundInstance.state()).valueOf();
 
       assert.equal(state, 2, "The current state is " + state + " and not " + 2 + ".");
     });
 
     it("Team wallet should be able to withdraw 10% of total ETH contributed.", async() => {
-      let totalEtherContributed = web3.fromWei( await THXTokenDAICOInstance.totalEtherContributed.call() );
+      let totalEtherContributed = web3.fromWei( await THXTokenDAICOInstance.totalEtherContributed() );
       let calculatedFirstTimeWithdraw = totalEtherContributed.valueOf() * 0.1;
-      let firstWithdrawAmount = web3.fromWei( await PollManagedFundInstance.firstWithdrawAmount.call() );
+      let firstWithdrawAmount = web3.fromWei( await PollManagedFundInstance.firstWithdrawAmount() );
 
       await PollManagedFundInstance.firstWithdraw();
 
-      let teamWallet = await PollManagedFundInstance.teamWallet.call();
+      let teamWallet = await PollManagedFundInstance.teamWallet();
       let amount = web3.fromWei(web3.eth.getBalance(teamWallet), "ether").valueOf();
 
       assert(amount == (1000 + (config.softCap * 0.1)), "Ether not withdrawn from PollManagedFund.")
@@ -66,8 +66,8 @@ contract('THXTokenDAICO', async (accounts) => {
     });
 
     it("Team wallet should be able to withdraw 250 ETH 30 days after the end of the crowdsale.", async() => {
-      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call();
-      let teamWallet = await PollManagedFundInstance.teamWallet.call();
+      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME();
+      let teamWallet = await PollManagedFundInstance.teamWallet();
 
       await timeTravel((parseInt(crowdSaleEndTime) + (30 * 86400)) - (web3.eth.getBlock('latest').timestamp)); // 30 days
 

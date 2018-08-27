@@ -44,59 +44,59 @@ const run = exports.run = async (accounts) => {
 
   it("The manager should be able to set the locked token address on the Poll Managed Fund contract", async () => {
       await PollManagedFundInstance.setLockedTokenAddress(LockedTokens.address);
-      let lockedTokenAddress = await PollManagedFundInstance.lockedTokenAddress.call();
+      let lockedTokenAddress = await PollManagedFundInstance.lockedTokenAddress();
 
       assert.equal(lockedTokenAddress, LockedTokens.address, "lockedTokens address is not set to " + LockedTokens.adress);
   });
 
   it("The manager should be able to set the token address on the Poll Managed Fund contract", async () => {
       await PollManagedFundInstance.setTokenAddress(THXToken.address);
-      let tokenAddress = await PollManagedFundInstance.token.call();
+      let tokenAddress = await PollManagedFundInstance.token();
 
       assert.equal(tokenAddress, THXToken.address, "token address is not set to the correct address " + THXToken.adress);
   });
 
   it("The manager should be able to set the crowdsale address on Poll Managed Fund contract", async () => {
       await PollManagedFundInstance.setCrowdsaleAddress(THXTokenDAICO.address)
-      let crowdsaleAddress = await PollManagedFundInstance.crowdsaleAddress.call();
+      let crowdsaleAddress = await PollManagedFundInstance.crowdsaleAddress();
 
       assert.equal(crowdsaleAddress, THXTokenDAICO.address, "crowdsale address is set");
   });
 
   it("The manager should be able to set the crowdsale address on Reservation Fund contract", async () => {
       await ReservationFundInstance.setCrowdsaleAddress(THXTokenDAICO.address);
-      let crowdsaleAddress = await ReservationFundInstance.crowdsale.call();
+      let crowdsaleAddress = await ReservationFundInstance.crowdsale();
 
       assert.equal(crowdsaleAddress, THXTokenDAICO.address, "crowdsale address is set");
   });
 
   it("The manager should be able to set the private sale hard cap in the Crowdsale contract", async () => {
       await THXTokenDAICOInstance.setPrivateSaleHardCap(web3.toWei(config.privateSaleHardCap, "ether"));
-      let privateSaleHardCap = await THXTokenDAICOInstance.privateSaleHardCap.call();
+      let privateSaleHardCap = await THXTokenDAICOInstance.privateSaleHardCap();
 
       assert.equal(web3.fromWei(privateSaleHardCap.valueOf(), "ether"), config.privateSaleHardCap, config.privateSaleHardCap + " ETH is not set as hard cap");
   });
 
   it("The manager should be able to set the soft cap in the Crowdsale contract", async () => {
       await THXTokenDAICOInstance.setSoftCap(web3.toWei(config.softCap, "ether"));
-      let softCap = await THXTokenDAICOInstance.softCap.call();
+      let softCap = await THXTokenDAICOInstance.softCap();
 
       assert.equal(web3.fromWei(softCap.valueOf(), "ether"), config.softCap, config.softCap + " ETH is not set as soft cap");
   });
 
   it("The manager should be able to set the hard cap in the Crowdsale contract", async () => {
       await THXTokenDAICOInstance.setHardCap(web3.toWei(config.hardCap, "ether"));
-      let hardCap = await THXTokenDAICOInstance.hardCap.call();
+      let hardCap = await THXTokenDAICOInstance.hardCap();
 
       assert.equal(web3.fromWei(hardCap.valueOf(), "ether"), config.hardCap, config.hardCap + " ETH is not set as hard cap");
   });
 
   it("The manager should be able to set the token price in the Crowdsale contract", async () => {
       await THXTokenDAICOInstance.setTokenPrice(config.tokenPriceNum, config.tokenPriceDenom, config.bnbTokenPriceNum, config.bnbTokenPriceDenom);
-      let tokenPriceNum = await THXTokenDAICOInstance.tokenPriceNum.call();
-      let tokenPriceDenom = await THXTokenDAICOInstance.tokenPriceDenom.call();
-      let bnbTokenPriceNum = await THXTokenDAICOInstance.bnbTokenPriceNum.call();
-      let bnbTokenPriceDenom = await THXTokenDAICOInstance.bnbTokenPriceDenom.call();
+      let tokenPriceNum = await THXTokenDAICOInstance.tokenPriceNum();
+      let tokenPriceDenom = await THXTokenDAICOInstance.tokenPriceDenom();
+      let bnbTokenPriceNum = await THXTokenDAICOInstance.bnbTokenPriceNum();
+      let bnbTokenPriceDenom = await THXTokenDAICOInstance.bnbTokenPriceDenom();
 
       assert.equal(tokenPriceNum, config.tokenPriceNum, config.tokenPriceNum + " is not set as token price numerator");
       assert.equal(tokenPriceDenom, config.tokenPriceDenom, config.tokenPriceDenom + " is not set as token price denominator");
@@ -106,7 +106,7 @@ const run = exports.run = async (accounts) => {
 
   it("The manager should be able to set the locked token address in the Crowdsale contract", async () => {
       await THXTokenDAICOInstance.setLockedTokens(LockedTokens.address);
-      let lockedTokens = await THXTokenDAICOInstance.lockedTokens.call();
+      let lockedTokens = await THXTokenDAICOInstance.lockedTokens();
 
       assert.equal(lockedTokens, LockedTokens.address, "lockedTokens address is not set to " + LockedTokens.address);
   });

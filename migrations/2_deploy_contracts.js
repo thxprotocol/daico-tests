@@ -18,7 +18,6 @@ module.exports = function(deployer, network, accounts) {
     .then(function(){
         return deployer.deploy(PollManagedFund,
             _teamWallet = accounts[1],
-            _crowdsaleTokenWallet = accounts[2],
             _grantsTokenWallet = accounts[3],
             _companyTokenWallet = accounts[4],
             _reserveTokenWallet = accounts[5],
@@ -35,7 +34,6 @@ module.exports = function(deployer, network, accounts) {
             fundAddress = PollManagedFund.address,
             reservationFundAddress = ReservationFund.address,
             _bnbTokenWallet = accounts[8],
-            _crowdsaleTokenWallet = accounts[2],
             _grantsTokenWallet = accounts[3],
             _advisorsTokenWallet = accounts[7],
             _companyTokenWallet = accounts[4],

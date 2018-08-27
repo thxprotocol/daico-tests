@@ -40,7 +40,7 @@ ganache-cli --accounts=35 --defaultBalanceEther=1000 --gasPrice=10225000000 --ga
 |-|-|
 | 0 | Coinbase, contract owner and has manager roles |
 | 1 | Team Wallet |
-| 2 | Crowdsale Token Wallet |
+| 2 | - |
 | 3 | Foundation Token Wallet |
 | 4 | Company Token Wallet |
 | 5 | Reserve Token Wallet |
@@ -51,7 +51,7 @@ ganache-cli --accounts=35 --defaultBalanceEther=1000 --gasPrice=10225000000 --ga
 | 10 | Test account #0 |
 | 11 | Test account #1 |
 | .. | .. |
-| 34 | Test account #34 |
+| 34 | Test account #24 |
 
 ## Deployment
 
@@ -261,11 +261,8 @@ web3.eth.sendTransaction({ from: web3.eth.accounts[11], to: tapPollAddress, data
 
 ### Vote for full refund
 
-@TODO Create a refundPoll on a date set in `PollManagedFund.refundPollDates`, vote YES with the majority and see if all ETH is refunded automagically.
-
 ```javascript
-// Create a refundPoll but make sure you are in the correct time window (see refundPollDates PollManagedFund)
-...
+
 ```
 
 ## Time traveling
@@ -295,6 +292,9 @@ For the key features in the DAICO contracts automated tests are written. You can
 # Run a specific test, remember to restart your RPC between tests.
 truffle test ./test/configuration.js --network ganache
 truffle test ./test/contributing.js --network ganache
-truffle test ./test/voting.js --network ganache
-truffle test ./test/refunding.js --network ganache
+truffle test ./test/bonus.js --network ganache
+truffle test ./test/transfer.js --network ganache
+truffle test ./test/withdraw.js --network ganache
+truffle test ./test/tapPoll.js --network ganache
+truffle test ./test/refundPoll.js --network ganache
 ```

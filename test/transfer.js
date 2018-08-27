@@ -24,8 +24,8 @@ contract('THXTokenDAICO', async (accounts) => {
 
     it("Crowdsale should be finalized and fund in Withdraw Mode.", async() => {
       // Contribute in bonus window 1
-      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME.call().valueOf();
-      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME.call().valueOf();
+      let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME().valueOf();
+      let crowdSaleEndTime = await THXTokenDAICOInstance.SALE_END_TIME().valueOf();
 
       await timeTravel((parseInt(crowdSaleStartTime) + 86400) - web3.eth.getBlock('latest').timestamp); // + 86400 seconds == 1 day
 
@@ -54,7 +54,7 @@ contract('THXTokenDAICO', async (accounts) => {
 
       await THXTokenDAICOInstance.finalizeCrowdsale();
 
-      let state = (await PollManagedFundInstance.state.call()).valueOf();
+      let state = (await PollManagedFundInstance.state()).valueOf();
       var balance = web3.fromWei(await THXTokenInstance.balanceOf(accounts[10]), "ether").valueOf();
 
       assert(tx1 != null, "Transaction 1 of 1 ETH failed.");
