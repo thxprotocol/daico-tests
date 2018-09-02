@@ -5,6 +5,11 @@ module.exports = {
             port: 8545,
             network_id: "*"
         },
+        ganache_ui: {
+            host: "localhost",
+            port: 8546,
+            network_id: "*"
+        },
         geth: {
             host: "localhost",
             port: 7545,

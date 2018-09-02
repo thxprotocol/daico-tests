@@ -63,31 +63,31 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(tx != null, "Transaction of 1 ETH failed.");
     });
 
-    it("Contributor should be able to make payment in bonus window 3", async() => {
-      // Contribute in bonus window 3
-      let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME().valueOf();
-      let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME().valueOf();
-
-      await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
-
-      await THXTokenDAICOInstance.addToWhiteList(accounts[12]);
-      let tx = await THXTokenDAICOInstance.sendTransaction({
-          from: accounts[12],
-          to: THXTokenDAICO.address,
-          value: web3.toWei(1, "ether")
-      });
-
-      var blocktime = web3.eth.getBlock('latest').timestamp;
-
-      assert(blocktime > bonusWindow2EndTime && blocktime < bonusWindow3EndTime, "Bonus window not correct.");
-      assert(tx != null, "Transaction of 1 ETH failed.");
-    });
+    // it("Contributor should be able to make payment in bonus window 3", async() => {
+    //   // Contribute in bonus window 3
+    //   let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME().valueOf();
+    //   let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME().valueOf();
+    //
+    //   await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // + 86400 seconds == 1 day
+    //
+    //   await THXTokenDAICOInstance.addToWhiteList(accounts[12]);
+    //   let tx = await THXTokenDAICOInstance.sendTransaction({
+    //       from: accounts[12],
+    //       to: THXTokenDAICO.address,
+    //       value: web3.toWei(1, "ether")
+    //   });
+    //
+    //   var blocktime = web3.eth.getBlock('latest').timestamp;
+    //
+    //   assert(blocktime > bonusWindow2EndTime && blocktime < bonusWindow3EndTime, "Bonus window not correct.");
+    //   assert(tx != null, "Transaction of 1 ETH failed.");
+    // });
 
     it("Contributor should be able to make payment outside of bonus windows", async() => {
       // Contribute with no bonus
-      let bonusWindow3EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_3_END_TIME().valueOf();
+      let bonusWindow2EndTime = await THXTokenDAICOInstance.BONUS_WINDOW_2_END_TIME().valueOf();
 
-      await timeTravel((parseInt(bonusWindow3EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp));
+      await timeTravel((parseInt(bonusWindow2EndTime) + 86400) - (web3.eth.getBlock('latest').timestamp));
 
       await THXTokenDAICOInstance.addToWhiteList(accounts[13]); // + 86400 seconds == 1 day
       let tx = await THXTokenDAICOInstance.sendTransaction({
@@ -98,7 +98,7 @@ contract('THXTokenDAICO', async (accounts) => {
 
       var blocktime = web3.eth.getBlock('latest').timestamp;
 
-      assert(blocktime > bonusWindow3EndTime, "Bonus window not correct.");
+      assert(blocktime > bonusWindow2EndTime, "Bonus window not correct.");
       assert(tx != null, "Transaction of 1 ETH failed.");
     });
 
@@ -108,17 +108,17 @@ contract('THXTokenDAICO', async (accounts) => {
       assert.equal(balance, config.tokenPriceNum * 1.1, "Bonus was not calculated correct.");
     });
 
-    it("2nd week contributor should receive 7.5% more tokens.", async() => {
+    it("2nd week contributor should receive 5% more tokens.", async() => {
       var balance = web3.fromWei(await THXTokenInstance.balanceOf(accounts[11]), "ether").valueOf();
-
-      assert.equal(balance, config.tokenPriceNum * 1.075, "Bonus was not calculated correct.");
-    });
-
-    it("3th week contributor should receive 5% more tokens.", async() => {
-      var balance = web3.fromWei(await THXTokenInstance.balanceOf(accounts[12]), "ether").valueOf();
 
       assert.equal(balance, config.tokenPriceNum * 1.05, "Bonus was not calculated correct.");
     });
+
+    // it("3th week contributor should receive 5% more tokens.", async() => {
+    //   var balance = web3.fromWei(await THXTokenInstance.balanceOf(accounts[12]), "ether").valueOf();
+    //
+    //   assert.equal(balance, config.tokenPriceNum * 1.05, "Bonus was not calculated correct.");
+    // });
 
     it("Contributors outside bonus windows should receive no bonus.", async() => {
       var balance = web3.fromWei(await THXTokenInstance.balanceOf(accounts[13]), "ether").valueOf();
