@@ -33,13 +33,13 @@ contract('THXTokenDAICO', async (accounts) => {
       let privateSaleStartTime = await THXTokenDAICOInstance.PRIVATE_SALE_START_TIME();
       let blocktime = await web3.eth.getBlock('latest').timestamp;
 
-      await timeTravel(privateSaleStartTime - (web3.eth.getBlock('latest').timestamp));
+      await timeTravel(privateSaleStartTime - blocktime);
 
       await THXTokenDAICOInstance.addToLists(accounts[12], false, true, false, true);
 
       let teamWalletAddress = await THXTokenDAICOInstance.teamWallet();
       var balance = await web3.eth.getBalance(teamWalletAddress);
-      let teamWalletBalance = web3.fromWei(balance.valueOf(), "ether");
+      let teamWalletBalance = web3.fromWei(balance, "ether").valueOf();
 
       await THXTokenDAICOInstance.sendTransaction({
           from: accounts[12],
@@ -48,11 +48,12 @@ contract('THXTokenDAICO', async (accounts) => {
       });
 
       var balance = await web3.eth.getBalance(teamWalletAddress);
-      let newTeamWalletbalance = web3.fromWei(balance.valueOf(), "ether");
+      let newTeamWalletbalance = web3.fromWei(balance, "ether").valueOf();
       let calculatedNewTeamWalletBalance = parseInt(teamWalletBalance) + 500;
 
-      assert.equal(newTeamWalletbalance, calculatedNewTeamWalletBalance, "500 ether is not added to the teamWallet");
-      // Check for bonus on contributor token wallet.
+      assert(newTeamWalletbalance == calculatedNewTeamWalletBalance, "500 ether is not added to the teamWallet");
+
+      // @TODO Check for bonus on contributor token wallet when crowdsale is finalized.
     });
 
     /*********************************************************************************************************
@@ -66,7 +67,7 @@ contract('THXTokenDAICO', async (accounts) => {
         let crowdSaleStartTime = await THXTokenDAICOInstance.SALE_START_TIME();
         let blocktime = await web3.eth.getBlock('latest').timestamp;
 
-        await timeTravel((parseInt(crowdSaleStartTime) + 86400) - (web3.eth.getBlock('latest').timestamp)); // 86400 seconds == 1 day
+        await timeTravel((parseInt(crowdSaleStartTime) + 86400) - blocktime); // 86400 seconds == 1 day
 
         await THXTokenDAICOInstance.sendTransaction({
             from: accounts[10],
@@ -74,10 +75,10 @@ contract('THXTokenDAICO', async (accounts) => {
             value: web3.toWei(250, "ether")
         });
 
-        var balance = web3.eth.getBalance(ReservationFund.address);
-        let reservationFundBalance = balance.valueOf();
+        var balance = await web3.eth.getBalance(ReservationFund.address);
+        let reservationFundBalance = web3.fromWei(balance, "ether").valueOf();
 
-        assert.equal(reservationFundBalance, web3.toWei(250, "ether"), "the balance of the Reservation Fund is not correct.");
+        assert(reservationFundBalance == 250, "the balance of the Reservation Fund is not correct.");
     });
 
     it("Contributions in the Reservation Fund should be transfered to the Poll Managed Fund when the contributor becomes whitelisted", async () => {
@@ -105,8 +106,9 @@ contract('THXTokenDAICO', async (accounts) => {
         var balance = await web3.eth.getBalance(PollManagedFund.address);
         let PollManagedFundBalance = web3.fromWei(balance.valueOf(), "ether");
 
-        assert.equal(PollManagedFundBalance, 750, "750 ether in total is not contributed in the reservation fund");
-        // Add another assertaton that checks if 5 ether is substracted from account 10
+        assert(PollManagedFundBalance == 750, "750 ether in total is not contributed in the reservation fund");
+
+        // Add another assertion that checks if 5 ether is substracted from account 10
         // Add another assertion that checks if the amount of contributors is 2
     });
 
@@ -117,7 +119,7 @@ contract('THXTokenDAICO', async (accounts) => {
 
         let state = (await PollManagedFundInstance.state()).valueOf();
 
-        assert.equal(state, 1, "The current state is " + state + " and not 1.");
+        assert(state == 1, "The current state is " + state + " and not 1.");
 
         await PollManagedFundInstance.refundCrowdsaleContributor({ from: accounts[11] });
 
@@ -125,7 +127,7 @@ contract('THXTokenDAICO', async (accounts) => {
         let newBalance = parseInt(web3.fromWei(balance, "ether").valueOf());
         let calculatedNewBalance = parseInt(web3.fromWei(oldBalance, "ether").valueOf()) + 500;
 
-        assert.equal(newBalance, calculatedNewBalance, "The new balance doesn't equal the old balance with refuned 500 ETH");
+        assert(newBalance == calculatedNewBalance, "The new balance doesn't equal the old balance with refuned 500 ETH");
     });
 
 });
