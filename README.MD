@@ -32,7 +32,7 @@ Start ganache-cli with 35 accounts filled with 1000 ETH each and a gas configura
 
 ```bash
 # Start ganache-cli
-ganache-cli --accounts=35 --defaultBalanceEther=1000 --gasPrice=10225000000 --gasLimit=8500000
+ganache-cli --accounts=345 --defaultBalanceEther=1000 --gasPrice=10225000000 --gasLimit=8500000
 ```
 
 ## Accounts and wallets
