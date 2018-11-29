@@ -62,12 +62,15 @@ contract('THXTokenDAICO', async (accounts) => {
       assert(tx3 != null, "Transaction 3 of 750 ETH failed.");
 
       assert(state == 2, "The current state is " + state + " and not " + 2 + ".");
-      assert(balance == config.tokenPriceNum * 1.1, "Token amount is not correct.");
+      assert(balance == config.tokenPriceNum * 1.2, "Token amount is not correct.");
     });
 
     it("Contributor should be able to transfer his tokens to another wallet.", async() => {
       var amountInWei = await THXTokenInstance.balanceOf(accounts[10]).valueOf();
       var amount = web3.fromWei(amountInWei, "ether").valueOf();
+
+      var balanceSender = web3.fromWei(await THXTokenInstance.balanceOf(accounts[10]), "ether").valueOf();
+      var balanceReceiver = web3.fromWei(await THXTokenInstance.balanceOf(accounts[15]), "ether").valueOf();
 
       // Allow transfers
       await THXTokenInstance.enableTransfers();
@@ -76,11 +79,12 @@ contract('THXTokenDAICO', async (accounts) => {
       await THXTokenInstance.approve(accounts[10], amountInWei, { from: accounts[10] });
       await THXTokenInstance.transferFrom(accounts[10], accounts[15], amountInWei, { from: accounts[10] });
 
-      var balanceSender = web3.fromWei(await THXTokenInstance.balanceOf(accounts[10]), "ether").valueOf();
-      var balanceReceiver = web3.fromWei(await THXTokenInstance.balanceOf(accounts[15]), "ether").valueOf();
+      var newBalanceSender = web3.fromWei(await THXTokenInstance.balanceOf(accounts[10]), "ether").valueOf();
+      var newBalanceReceiver = web3.fromWei(await THXTokenInstance.balanceOf(accounts[15]), "ether").valueOf();
 
-      assert(balanceSender == 0, "Token amount is not correct.");
-      assert(balanceReceiver == amount, "Token amount is not correct.");
+      assert(newBalanceSender == 0, "Token balance of sender is not 0.");
+      assert(newBalanceSender < balanceSender, "Token balance of sender is not smaller than before transfer.");
+      assert(newBalanceReceiver > balanceReceiver, "Token balance of receiver is larger than before transfer.");
     });
 
 });
